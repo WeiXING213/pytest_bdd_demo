@@ -24,7 +24,7 @@ steps:
   displayName: 'Install dependencies'
 
 - bash: |
-    python install selenium
+    pip install selenium
   displayName : 'Install a bunch of pip packages.'
 
 - script: |
