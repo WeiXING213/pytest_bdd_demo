@@ -26,10 +26,11 @@ steps:
 - bash: |
     pip install selenium
     pip install pyyaml
+    pip install pytest pytest-azurepipelines
   displayName : 'Install a bunch of pip packages.'
 
-- script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+- bash: |
+    cd steps
+    pytest bdd_steps.py
+  displayName: 'Run BDD tests'
 
