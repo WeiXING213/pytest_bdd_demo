@@ -3,11 +3,13 @@
 # Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
+
+environment: Selenium Test machine
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-latest'
+#pool:
+#  vmImage: 'windows-latest'
 strategy:
   matrix:
     Python37:
