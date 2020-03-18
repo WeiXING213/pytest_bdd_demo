@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="1" failures="0" hostname="WXING-F" name="pytest" skipped="0" tests="1" time="1.243" timestamp="2020-03-18T14:40:26.904768"><testcase classname="" file="bdd_steps.py" name="bdd_steps" time="0.000"><error message="collection failure">steps\bdd_steps.py:21: in &lt;module&gt;
+    scenarios(&apos;.&apos;, example_converters=CONVERTERS)
+venv\lib\site-packages\pytest_bdd\scenario.py:360: in scenarios
+    for feature in get_features(abs_feature_paths, strict_gherkin=strict_gherkin):
+venv\lib\site-packages\pytest_bdd\feature.py:167: in get_features
+    feature = Feature.get_feature(base, name, **kwargs)
+venv\lib\site-packages\pytest_bdd\feature.py:411: in get_feature
+    feature = Feature(base_path, filename, encoding=encoding, strict_gherkin=strict_gherkin)
+venv\lib\site-packages\pytest_bdd\feature.py:279: in __init__
+    with codecs.open(filename, encoding=encoding) as f:
+..\..\AppData\Local\Programs\Python\Python37\lib\codecs.py:904: in open
+    file = builtins.open(filename, mode, buffering)
+E   FileNotFoundError: [Errno 2] No such file or directory: &apos;C:\\Users\\w.xing\\PycharmProjects\\features&apos;</error></testcase></testsuite></testsuites>

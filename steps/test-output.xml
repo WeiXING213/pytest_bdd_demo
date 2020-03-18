@@ -1,0 +1,1411 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="1" hostname="WXING-F" name="pytest" skipped="0" tests="1" time="5.661" timestamp="2020-03-18T14:38:57.269245"><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]" time="0.863"><failure message="AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;">feature = &lt;pytest_bdd.feature.Feature object at 0x000001F170BCDE48&gt;, scenario = &lt;pytest_bdd.feature.Scenario object at 0x000001F170BD5248&gt;
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, encoding = &apos;utf-8&apos;
+
+    def _execute_scenario(feature, scenario, request, encoding):
+        &quot;&quot;&quot;Execute the scenario.
+    
+        :param feature: Feature.
+        :param scenario: Scenario.
+        :param request: request.
+        :param encoding: Encoding.
+        &quot;&quot;&quot;
+        request.config.hook.pytest_bdd_before_scenario(
+            request=request,
+            feature=feature,
+            scenario=scenario,
+        )
+    
+        try:
+            givens = set()
+            # Execute scenario steps
+            for step in scenario.steps:
+                try:
+                    step_func = _find_step_function(request, step, scenario, encoding=encoding)
+                except exceptions.StepDefinitionNotFoundError as exception:
+                    request.config.hook.pytest_bdd_step_func_lookup_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        exception=exception,
+                    )
+                    raise
+    
+                try:
+                    # Check if the fixture that implements given step has not been yet used by another given step
+                    if step.type == GIVEN:
+                        if step_func.fixture in givens:
+                            raise exceptions.GivenAlreadyUsed(
+                                u&apos;Fixture &quot;{0}&quot; that implements this &quot;{1}&quot; given step has been already used.&apos;.format(
+                                    step_func.fixture, step.name,
+                                )
+                            )
+                        givens.add(step_func.fixture)
+                except exceptions.ScenarioValidationError as exception:
+                    request.config.hook.pytest_bdd_step_validation_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        step_func=step_func,
+                        exception=exception,
+                        step_func_args=dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func)),
+                    )
+                    raise
+    
+&gt;               _execute_step_function(request, scenario, step, step_func)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x000001F170BD5248&gt;, step = &lt;pytest_bdd.feature.Step object at 0x000001F170BD50C8&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x000001F170B28948&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+&gt;           step_func(**kwargs)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def step_func(request):
+&gt;       result = request.getfixturevalue(func.__name__)
+
+..\venv\lib\site-packages\pytest_bdd\steps.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def getfixturevalue(self, argname):
+        &quot;&quot;&quot; Dynamically run a named fixture function.
+    
+        Declaring fixtures via function argument is recommended where possible.
+        But if you can only decide whether to use another fixture at test
+        setup time, you may use this function to retrieve it inside a fixture
+        or test function body.
+        &quot;&quot;&quot;
+&gt;       return self._get_active_fixturedef(argname).cached_result[0]
+
+..\venv\lib\site-packages\_pytest\fixtures.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+request = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+&gt;           fixturedef = request._get_active_fixturedef(argname)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:889: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, argname = &apos;chromeBrowser&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+            fixturedef = request._get_active_fixturedef(argname)
+            if argname != &quot;request&quot;:
+                fixturedef.addfinalizer(functools.partial(self.finish, request=request))
+    
+        my_cache_key = self.cache_key(request)
+        cached_result = getattr(self, &quot;cached_result&quot;, None)
+        if cached_result is not None:
+            result, cache_key, err = cached_result
+            if my_cache_key == cache_key:
+                if err is not None:
+                    _, val, tb = err
+                    raise val.with_traceback(tb)
+                else:
+                    return result
+            # we have a previous but differently parametrized fixture instance
+            # so we need to tear it down before creating a new one
+            self.finish(request)
+            assert not hasattr(self, &quot;cached_result&quot;)
+    
+        hook = self._fixturemanager.session.gethookproxy(request.node.fspath)
+&gt;       return hook.pytest_fixture_setup(fixturedef=self, request=request)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:909: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;, args = ()
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x000001F16BAB73C8&gt;, hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharm...t.setuponly&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharmtest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharm...t.setuponly&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharmtest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharm...t.setuponly&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharmtest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x000001F170C152C8&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharm...t.setuponly&apos; from &apos;c:\\users\\w.xing\\pycharmprojects\\pycharmtest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def pytest_fixture_setup(fixturedef, request):
+        &quot;&quot;&quot; Execution of fixture setup. &quot;&quot;&quot;
+        kwargs = {}
+        for argname in fixturedef.argnames:
+            fixdef = request._get_active_fixturedef(argname)
+            result, arg_cache_key, exc = fixdef.cached_result
+            request._check_scope(argname, request.scope, fixdef.scope)
+            kwargs[argname] = result
+    
+        fixturefunc = resolve_fixture_function(fixturedef, request)
+        my_cache_key = fixturedef.cache_key(request)
+        try:
+&gt;           result = call_fixture_func(fixturefunc, request, kwargs)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:958: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturefunc = &lt;function chromeBrowser at 0x000001F16D867828&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, kwargs = {}
+
+    def call_fixture_func(fixturefunc, request, kwargs):
+        yieldctx = is_generator(fixturefunc)
+        if yieldctx:
+            it = fixturefunc(**kwargs)
+&gt;           res = next(it)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:784: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    def chromeBrowser():
+        global BROWSER
+    
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option(&apos;prefs&apos;, {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;})
+    
+        BROWSER = webdriver.Chrome(&quot;D:\\tools\\drivers\\chromeDriver\\chromedriver.exe&quot;,
+&gt;                                  chrome_options=options)
+
+conftest.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;None&quot;)&gt;, executable_path = &apos;D:\\tools\\drivers\\chromeDriver\\chromedriver.exe&apos;, port = 0
+options = &lt;selenium.webdriver.chrome.options.Options object at 0x000001F170C15508&gt;, service_args = None
+desired_capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+service_log_path = None, chrome_options = &lt;selenium.webdriver.chrome.options.Options object at 0x000001F170C15508&gt;, keep_alive = True
+
+    def __init__(self, executable_path=&quot;chromedriver&quot;, port=0,
+                 options=None, service_args=None,
+                 desired_capabilities=None, service_log_path=None,
+                 chrome_options=None, keep_alive=True):
+        &quot;&quot;&quot;
+        Creates a new instance of the chrome driver.
+    
+        Starts the service and then creates new instance of chrome driver.
+    
+        :Args:
+         - executable_path - path to the executable. If the default is used it assumes the executable is in the $PATH
+         - port - port you would like the service to run, if left as 0, a free port will be found.
+         - options - this takes an instance of ChromeOptions
+         - service_args - List of args to pass to the driver service
+         - desired_capabilities - Dictionary object with non-browser specific
+           capabilities only, such as &quot;proxy&quot; or &quot;loggingPref&quot;.
+         - service_log_path - Where to log information from the driver.
+         - chrome_options - Deprecated argument for options
+         - keep_alive - Whether to configure ChromeRemoteConnection to use HTTP keep-alive.
+        &quot;&quot;&quot;
+        if chrome_options:
+            warnings.warn(&apos;use options instead of chrome_options&apos;,
+                          DeprecationWarning, stacklevel=2)
+            options = chrome_options
+    
+        if options is None:
+            # desired_capabilities stays as passed in
+            if desired_capabilities is None:
+                desired_capabilities = self.create_options().to_capabilities()
+        else:
+            if desired_capabilities is None:
+                desired_capabilities = options.to_capabilities()
+            else:
+                desired_capabilities.update(options.to_capabilities())
+    
+        self.service = Service(
+            executable_path,
+            port=port,
+            service_args=service_args,
+            log_path=service_log_path)
+        self.service.start()
+    
+        try:
+            RemoteWebDriver.__init__(
+                self,
+                command_executor=ChromeRemoteConnection(
+                    remote_server_addr=self.service.service_url,
+                    keep_alive=keep_alive),
+&gt;               desired_capabilities=desired_capabilities)
+
+..\venv\lib\site-packages\selenium\webdriver\chrome\webdriver.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;None&quot;)&gt;, command_executor = &lt;selenium.webdriver.chrome.remote_connection.ChromeRemoteConnection object at 0x000001F170C156C8&gt;
+desired_capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+browser_profile = None, proxy = None, keep_alive = False, file_detector = None, options = None
+
+    def __init__(self, command_executor=&apos;http://127.0.0.1:4444/wd/hub&apos;,
+                 desired_capabilities=None, browser_profile=None, proxy=None,
+                 keep_alive=False, file_detector=None, options=None):
+        &quot;&quot;&quot;
+        Create a new driver that will issue commands using the wire protocol.
+    
+        :Args:
+         - command_executor - Either a string representing URL of the remote server or a custom
+             remote_connection.RemoteConnection object. Defaults to &apos;http://127.0.0.1:4444/wd/hub&apos;.
+         - desired_capabilities - A dictionary of capabilities to request when
+             starting the browser session. Required parameter.
+         - browser_profile - A selenium.webdriver.firefox.firefox_profile.FirefoxProfile object.
+             Only used if Firefox is requested. Optional.
+         - proxy - A selenium.webdriver.common.proxy.Proxy object. The browser session will
+             be started with given proxy settings, if possible. Optional.
+         - keep_alive - Whether to configure remote_connection.RemoteConnection to use
+             HTTP keep-alive. Defaults to False.
+         - file_detector - Pass custom file detector object during instantiation. If None,
+             then default LocalFileDetector() will be used.
+         - options - instance of a driver options.Options class
+        &quot;&quot;&quot;
+        capabilities = {}
+        if options is not None:
+            capabilities = options.to_capabilities()
+        if desired_capabilities is not None:
+            if not isinstance(desired_capabilities, dict):
+                raise WebDriverException(&quot;Desired Capabilities must be a dictionary&quot;)
+            else:
+                capabilities.update(desired_capabilities)
+        if proxy is not None:
+            warnings.warn(&quot;Please use FirefoxOptions to set proxy&quot;,
+                          DeprecationWarning, stacklevel=2)
+            proxy.add_to_capabilities(capabilities)
+        self.command_executor = command_executor
+        if type(self.command_executor) is bytes or isinstance(self.command_executor, str):
+            self.command_executor = RemoteConnection(command_executor, keep_alive=keep_alive)
+        self._is_remote = True
+        self.session_id = None
+        self.capabilities = {}
+        self.error_handler = ErrorHandler()
+        self.start_client()
+        if browser_profile is not None:
+            warnings.warn(&quot;Please use FirefoxOptions to set browser profile&quot;,
+                          DeprecationWarning, stacklevel=2)
+&gt;       self.start_session(capabilities, browser_profile)
+
+..\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py:157: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;None&quot;)&gt;
+capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+browser_profile = None
+
+    def start_session(self, capabilities, browser_profile=None):
+        &quot;&quot;&quot;
+        Creates a new session with the desired capabilities.
+    
+        :Args:
+         - browser_name - The name of the browser to request.
+         - version - Which browser version to request.
+         - platform - Which platform to request the browser on.
+         - javascript_enabled - Whether the new session should support JavaScript.
+         - browser_profile - A selenium.webdriver.firefox.firefox_profile.FirefoxProfile object. Only used if Firefox is requested.
+        &quot;&quot;&quot;
+        if not isinstance(capabilities, dict):
+            raise InvalidArgumentException(&quot;Capabilities must be a dictionary&quot;)
+        if browser_profile:
+            if &quot;moz:firefoxOptions&quot; in capabilities:
+                capabilities[&quot;moz:firefoxOptions&quot;][&quot;profile&quot;] = browser_profile.encoded
+            else:
+                capabilities.update({&apos;firefox_profile&apos;: browser_profile.encoded})
+        w3c_caps = _make_w3c_caps(capabilities)
+        parameters = {&quot;capabilities&quot;: w3c_caps,
+                      &quot;desiredCapabilities&quot;: capabilities}
+&gt;       response = self.execute(Command.NEW_SESSION, parameters)
+
+..\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py:252: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;None&quot;)&gt;, driver_command = &apos;newSession&apos;
+params = {&apos;capabilities&apos;: {&apos;alwaysMatch&apos;: {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs...ns&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}}
+
+    def execute(self, driver_command, params=None):
+        &quot;&quot;&quot;
+        Sends a command to be executed by a command.CommandExecutor.
+    
+        :Args:
+         - driver_command: The name of the command to execute as a string.
+         - params: A dictionary of named parameters to send with the command.
+    
+        :Returns:
+          The command&apos;s JSON response loaded into a dictionary object.
+        &quot;&quot;&quot;
+        if self.session_id is not None:
+            if not params:
+                params = {&apos;sessionId&apos;: self.session_id}
+            elif &apos;sessionId&apos; not in params:
+                params[&apos;sessionId&apos;] = self.session_id
+    
+        params = self._wrap_value(params)
+&gt;       response = self.command_executor.execute(driver_command, params)
+
+..\venv\lib\site-packages\selenium\webdriver\remote\webdriver.py:319: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.remote_connection.ChromeRemoteConnection object at 0x000001F170C156C8&gt;, command = &apos;newSession&apos;
+params = {&apos;capabilities&apos;: {&apos;alwaysMatch&apos;: {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs...ns&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}}
+
+    def execute(self, command, params):
+        &quot;&quot;&quot;
+        Send a command to the remote server.
+    
+        Any path subtitutions required for the URL mapped to the command should be
+        included in the command parameters.
+    
+        :Args:
+         - command - A string specifying the command to execute.
+         - params - A dictionary of named parameters to send with the command as
+           its JSON payload.
+        &quot;&quot;&quot;
+        command_info = self._commands[command]
+        assert command_info is not None, &apos;Unrecognised command %s&apos; % command
+        path = string.Template(command_info[1]).substitute(params)
+        if hasattr(self, &apos;w3c&apos;) and self.w3c and isinstance(params, dict) and &apos;sessionId&apos; in params:
+            del params[&apos;sessionId&apos;]
+        data = utils.dump_json(params)
+        url = &apos;%s%s&apos; % (self._url, path)
+&gt;       return self._request(command_info[0], url, body=data)
+
+..\venv\lib\site-packages\selenium\webdriver\remote\remote_connection.py:374: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.remote_connection.ChromeRemoteConnection object at 0x000001F170C156C8&gt;, method = &apos;POST&apos;, url = &apos;http://127.0.0.1:54032/session&apos;
+body = &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:chromeOpt...atform&quot;: &quot;ANY&quot;, &quot;goog:chromeOptions&quot;: {&quot;prefs&quot;: {&quot;intl.accept_languages&quot;: &quot;en,en_US&quot;}, &quot;extensions&quot;: [], &quot;args&quot;: []}}}&apos;
+
+    def _request(self, method, url, body=None):
+        &quot;&quot;&quot;
+        Send an HTTP request to the remote server.
+    
+        :Args:
+         - method - A string for the HTTP method to send the request with.
+         - url - A string for the URL to send the request to.
+         - body - A string for request body. Ignored unless method is POST or PUT.
+    
+        :Returns:
+          A dictionary with the server&apos;s parsed JSON response.
+        &quot;&quot;&quot;
+        LOGGER.debug(&apos;%s %s %s&apos; % (method, url, body))
+    
+        parsed_url = parse.urlparse(url)
+        headers = self.get_remote_connection_headers(parsed_url, self.keep_alive)
+        resp = None
+        if body and method != &apos;POST&apos; and method != &apos;PUT&apos;:
+            body = None
+    
+        if self.keep_alive:
+&gt;           resp = self._conn.request(method, url, body=body, headers=headers)
+
+..\venv\lib\site-packages\selenium\webdriver\remote\remote_connection.py:397: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.poolmanager.PoolManager object at 0x000001F170C221C8&gt;, method = &apos;POST&apos;, url = &apos;http://127.0.0.1:54032/session&apos;, fields = None
+headers = {&apos;Accept&apos;: &apos;application/json&apos;, &apos;Connection&apos;: &apos;keep-alive&apos;, &apos;Content-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}
+urlopen_kw = {&apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:...intl.accept_languages&quot;: &quot;en,en_US&quot;}, &quot;extensions&quot;: [], &quot;args&quot;: []}}}&apos;, &apos;request_url&apos;: &apos;http://127.0.0.1:54032/session&apos;}
+
+    def request(self, method, url, fields=None, headers=None, **urlopen_kw):
+        &quot;&quot;&quot;
+        Make a request using :meth:`urlopen` with the appropriate encoding of
+        ``fields`` based on the ``method`` used.
+    
+        This is a convenience method that requires the least amount of manual
+        effort. It can be used in most situations, while still having the
+        option to drop down to more specific methods when necessary, such as
+        :meth:`request_encode_url`, :meth:`request_encode_body`,
+        or even the lowest level :meth:`urlopen`.
+        &quot;&quot;&quot;
+        method = method.upper()
+    
+        urlopen_kw[&quot;request_url&quot;] = url
+    
+        if method in self._encode_url_methods:
+            return self.request_encode_url(
+                method, url, fields=fields, headers=headers, **urlopen_kw
+            )
+        else:
+            return self.request_encode_body(
+&gt;               method, url, fields=fields, headers=headers, **urlopen_kw
+            )
+
+..\venv\lib\site-packages\urllib3\request.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.poolmanager.PoolManager object at 0x000001F170C221C8&gt;, method = &apos;POST&apos;, url = &apos;http://127.0.0.1:54032/session&apos;, fields = None
+headers = {&apos;Accept&apos;: &apos;application/json&apos;, &apos;Connection&apos;: &apos;keep-alive&apos;, &apos;Content-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}
+encode_multipart = True, multipart_boundary = None
+urlopen_kw = {&apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:...intl.accept_languages&quot;: &quot;en,en_US&quot;}, &quot;extensions&quot;: [], &quot;args&quot;: []}}}&apos;, &apos;request_url&apos;: &apos;http://127.0.0.1:54032/session&apos;}
+extra_kw = {&apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:...on;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}, &apos;request_url&apos;: &apos;http://127.0.0.1:54032/session&apos;}
+
+    def request_encode_body(
+        self,
+        method,
+        url,
+        fields=None,
+        headers=None,
+        encode_multipart=True,
+        multipart_boundary=None,
+        **urlopen_kw
+    ):
+        &quot;&quot;&quot;
+        Make a request using :meth:`urlopen` with the ``fields`` encoded in
+        the body. This is useful for request methods like POST, PUT, PATCH, etc.
+    
+        When ``encode_multipart=True`` (default), then
+        :meth:`urllib3.filepost.encode_multipart_formdata` is used to encode
+        the payload with the appropriate content type. Otherwise
+        :meth:`urllib.urlencode` is used with the
+        &apos;application/x-www-form-urlencoded&apos; content type.
+    
+        Multipart encoding must be used when posting files, and it&apos;s reasonably
+        safe to use it in other times too. However, it may break request
+        signing, such as with OAuth.
+    
+        Supports an optional ``fields`` parameter of key/value strings AND
+        key/filetuple. A filetuple is a (filename, data, MIME type) tuple where
+        the MIME type is optional. For example::
+    
+            fields = {
+                &apos;foo&apos;: &apos;bar&apos;,
+                &apos;fakefile&apos;: (&apos;foofile.txt&apos;, &apos;contents of foofile&apos;),
+                &apos;realfile&apos;: (&apos;barfile.txt&apos;, open(&apos;realfile&apos;).read()),
+                &apos;typedfile&apos;: (&apos;bazfile.bin&apos;, open(&apos;bazfile&apos;).read(),
+                              &apos;image/jpeg&apos;),
+                &apos;nonamefile&apos;: &apos;contents of nonamefile field&apos;,
+            }
+    
+        When uploading a file, providing a filename (the first parameter of the
+        tuple) is optional but recommended to best mimic behavior of browsers.
+    
+        Note that if ``headers`` are supplied, the &apos;Content-Type&apos; header will
+        be overwritten because it depends on the dynamic random boundary string
+        which is used to compose the body of the request. The random boundary
+        string can be explicitly set with the ``multipart_boundary`` parameter.
+        &quot;&quot;&quot;
+        if headers is None:
+            headers = self.headers
+    
+        extra_kw = {&quot;headers&quot;: {}}
+    
+        if fields:
+            if &quot;body&quot; in urlopen_kw:
+                raise TypeError(
+                    &quot;request got values for both &apos;fields&apos; and &apos;body&apos;, can only specify one.&quot;
+                )
+    
+            if encode_multipart:
+                body, content_type = encode_multipart_formdata(
+                    fields, boundary=multipart_boundary
+                )
+            else:
+                body, content_type = (
+                    urlencode(fields),
+                    &quot;application/x-www-form-urlencoded&quot;,
+                )
+    
+            extra_kw[&quot;body&quot;] = body
+            extra_kw[&quot;headers&quot;] = {&quot;Content-Type&quot;: content_type}
+    
+        extra_kw[&quot;headers&quot;].update(headers)
+        extra_kw.update(urlopen_kw)
+    
+&gt;       return self.urlopen(method, url, **extra_kw)
+
+..\venv\lib\site-packages\urllib3\request.py:171: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.poolmanager.PoolManager object at 0x000001F170C221C8&gt;, method = &apos;POST&apos;, url = &apos;http://127.0.0.1:54032/session&apos;, redirect = True
+kw = {&apos;assert_same_host&apos;: False, &apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;p...nt-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}, &apos;redirect&apos;: False, ...}
+u = Url(scheme=&apos;http&apos;, auth=None, host=&apos;127.0.0.1&apos;, port=54032, path=&apos;/session&apos;, query=None, fragment=None), conn = &lt;urllib3.connectionpool.HTTPConnectionPool object at 0x000001F170C15F48&gt;
+
+    def urlopen(self, method, url, redirect=True, **kw):
+        &quot;&quot;&quot;
+        Same as :meth:`urllib3.connectionpool.HTTPConnectionPool.urlopen`
+        with custom cross-host redirect logic and only sends the request-uri
+        portion of the ``url``.
+    
+        The given ``url`` parameter must be absolute, such that an appropriate
+        :class:`urllib3.connectionpool.ConnectionPool` can be chosen for it.
+        &quot;&quot;&quot;
+        u = parse_url(url)
+        conn = self.connection_from_host(u.host, port=u.port, scheme=u.scheme)
+    
+        kw[&quot;assert_same_host&quot;] = False
+        kw[&quot;redirect&quot;] = False
+    
+        if &quot;headers&quot; not in kw:
+            kw[&quot;headers&quot;] = self.headers.copy()
+    
+        if self.proxy is not None and u.scheme == &quot;http&quot;:
+            response = conn.urlopen(method, url, **kw)
+        else:
+&gt;           response = conn.urlopen(method, u.request_uri, **kw)
+
+..\venv\lib\site-packages\urllib3\poolmanager.py:330: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.connectionpool.HTTPConnectionPool object at 0x000001F170C15F48&gt;, method = &apos;POST&apos;, url = &apos;/session&apos;
+body = &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:chromeOpt...atform&quot;: &quot;ANY&quot;, &quot;goog:chromeOptions&quot;: {&quot;prefs&quot;: {&quot;intl.accept_languages&quot;: &quot;en,en_US&quot;}, &quot;extensions&quot;: [], &quot;args&quot;: []}}}&apos;
+headers = {&apos;Accept&apos;: &apos;application/json&apos;, &apos;Connection&apos;: &apos;keep-alive&apos;, &apos;Content-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}
+retries = Retry(total=3, connect=None, read=None, redirect=None, status=None), redirect = False, assert_same_host = False, timeout = &lt;object object at 0x000001F16D1844E0&gt;, pool_timeout = None
+release_conn = True, chunked = False, body_pos = None, response_kw = {&apos;request_url&apos;: &apos;http://127.0.0.1:54032/session&apos;}, conn = None, release_this_conn = True, err = None, clean_exit = False
+timeout_obj = &lt;urllib3.util.timeout.Timeout object at 0x000001F170C15E88&gt;, is_new_proxy_conn = False
+
+    def urlopen(
+        self,
+        method,
+        url,
+        body=None,
+        headers=None,
+        retries=None,
+        redirect=True,
+        assert_same_host=True,
+        timeout=_Default,
+        pool_timeout=None,
+        release_conn=None,
+        chunked=False,
+        body_pos=None,
+        **response_kw
+    ):
+        &quot;&quot;&quot;
+        Get a connection from the pool and perform an HTTP request. This is the
+        lowest level call for making a request, so you&apos;ll need to specify all
+        the raw details.
+    
+        .. note::
+    
+           More commonly, it&apos;s appropriate to use a convenience method provided
+           by :class:`.RequestMethods`, such as :meth:`request`.
+    
+        .. note::
+    
+           `release_conn` will only behave as expected if
+           `preload_content=False` because we want to make
+           `preload_content=False` the default behaviour someday soon without
+           breaking backwards compatibility.
+    
+        :param method:
+            HTTP request method (such as GET, POST, PUT, etc.)
+    
+        :param body:
+            Data to send in the request body (useful for creating
+            POST requests, see HTTPConnectionPool.post_url for
+            more convenience).
+    
+        :param headers:
+            Dictionary of custom headers to send, such as User-Agent,
+            If-None-Match, etc. If None, pool headers are used. If provided,
+            these headers completely replace any pool-specific headers.
+    
+        :param retries:
+            Configure the number of retries to allow before raising a
+            :class:`~urllib3.exceptions.MaxRetryError` exception.
+    
+            Pass ``None`` to retry until you receive a response. Pass a
+            :class:`~urllib3.util.retry.Retry` object for fine-grained control
+            over different types of retries.
+            Pass an integer number to retry connection errors that many times,
+            but no other types of errors. Pass zero to never retry.
+    
+            If ``False``, then retries are disabled and any exception is raised
+            immediately. Also, instead of raising a MaxRetryError on redirects,
+            the redirect response will be returned.
+    
+        :type retries: :class:`~urllib3.util.retry.Retry`, False, or an int.
+    
+        :param redirect:
+            If True, automatically handle redirects (status codes 301, 302,
+            303, 307, 308). Each redirect counts as a retry. Disabling retries
+            will disable redirect, too.
+    
+        :param assert_same_host:
+            If ``True``, will make sure that the host of the pool requests is
+            consistent else will raise HostChangedError. When False, you can
+            use the pool on an HTTP proxy and request foreign hosts.
+    
+        :param timeout:
+            If specified, overrides the default timeout for this one
+            request. It may be a float (in seconds) or an instance of
+            :class:`urllib3.util.Timeout`.
+    
+        :param pool_timeout:
+            If set and the pool is set to block=True, then this method will
+            block for ``pool_timeout`` seconds and raise EmptyPoolError if no
+            connection is available within the time period.
+    
+        :param release_conn:
+            If False, then the urlopen call will not release the connection
+            back into the pool once a response is received (but will release if
+            you read the entire contents of the response such as when
+            `preload_content=True`). This is useful if you&apos;re not preloading
+            the response&apos;s content immediately. You will need to call
+            ``r.release_conn()`` on the response ``r`` to return the connection
+            back into the pool. If None, it takes the value of
+            ``response_kw.get(&apos;preload_content&apos;, True)``.
+    
+        :param chunked:
+            If True, urllib3 will send the body using chunked transfer
+            encoding. Otherwise, urllib3 will send the body using the standard
+            content-length form. Defaults to False.
+    
+        :param int body_pos:
+            Position to seek to in file-like body in the event of a retry or
+            redirect. Typically this won&apos;t need to be set because urllib3 will
+            auto-populate the value when needed.
+    
+        :param \\**response_kw:
+            Additional parameters are passed to
+            :meth:`urllib3.response.HTTPResponse.from_httplib`
+        &quot;&quot;&quot;
+        if headers is None:
+            headers = self.headers
+    
+        if not isinstance(retries, Retry):
+            retries = Retry.from_int(retries, redirect=redirect, default=self.retries)
+    
+        if release_conn is None:
+            release_conn = response_kw.get(&quot;preload_content&quot;, True)
+    
+        # Check host
+        if assert_same_host and not self.is_same_host(url):
+            raise HostChangedError(self, url, retries)
+    
+        # Ensure that the URL we&apos;re connecting to is properly encoded
+        if url.startswith(&quot;/&quot;):
+            url = six.ensure_str(_encode_target(url))
+        else:
+            url = six.ensure_str(parse_url(url).url)
+    
+        conn = None
+    
+        # Track whether `conn` needs to be released before
+        # returning/raising/recursing. Update this variable if necessary, and
+        # leave `release_conn` constant throughout the function. That way, if
+        # the function recurses, the original value of `release_conn` will be
+        # passed down into the recursive call, and its value will be respected.
+        #
+        # See issue #651 [1] for details.
+        #
+        # [1] &lt;https://github.com/urllib3/urllib3/issues/651&gt;
+        release_this_conn = release_conn
+    
+        # Merge the proxy headers. Only do this in HTTP. We have to copy the
+        # headers dict so we can safely change it without those changes being
+        # reflected in anyone else&apos;s copy.
+        if self.scheme == &quot;http&quot;:
+            headers = headers.copy()
+            headers.update(self.proxy_headers)
+    
+        # Must keep the exception bound to a separate variable or else Python 3
+        # complains about UnboundLocalError.
+        err = None
+    
+        # Keep track of whether we cleanly exited the except block. This
+        # ensures we do proper cleanup in finally.
+        clean_exit = False
+    
+        # Rewind body position, if needed. Record current position
+        # for future rewinds in the event of a redirect/retry.
+        body_pos = set_file_position(body, body_pos)
+    
+        try:
+            # Request a connection from the queue.
+            timeout_obj = self._get_timeout(timeout)
+            conn = self._get_conn(timeout=pool_timeout)
+    
+            conn.timeout = timeout_obj.connect_timeout
+    
+            is_new_proxy_conn = self.proxy is not None and not getattr(
+                conn, &quot;sock&quot;, None
+            )
+            if is_new_proxy_conn:
+                self._prepare_proxy(conn)
+    
+            # Make the request on the httplib connection object.
+            httplib_response = self._make_request(
+                conn,
+                method,
+                url,
+                timeout=timeout_obj,
+                body=body,
+                headers=headers,
+&gt;               chunked=chunked,
+            )
+
+..\venv\lib\site-packages\urllib3\connectionpool.py:672: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.connectionpool.HTTPConnectionPool object at 0x000001F170C15F48&gt;, conn = &lt;urllib3.connection.HTTPConnection object at 0x000001F170C22088&gt;, method = &apos;POST&apos;, url = &apos;/session&apos;
+timeout = &lt;urllib3.util.timeout.Timeout object at 0x000001F170C15E88&gt;, chunked = False
+httplib_request_kw = {&apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:...n&apos;: &apos;keep-alive&apos;, &apos;Content-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}}
+timeout_obj = &lt;urllib3.util.timeout.Timeout object at 0x000001F170C22708&gt;, read_timeout = &lt;object object at 0x000001F16BEA22D0&gt;
+
+    def _make_request(
+        self, conn, method, url, timeout=_Default, chunked=False, **httplib_request_kw
+    ):
+        &quot;&quot;&quot;
+        Perform a request on a given urllib connection object taken from our
+        pool.
+    
+        :param conn:
+            a connection from one of our connection pools
+    
+        :param timeout:
+            Socket timeout in seconds for the request. This can be a
+            float or integer, which will set the same timeout value for
+            the socket connect and the socket read, or an instance of
+            :class:`urllib3.util.Timeout`, which gives you more fine-grained
+            control over your timeouts.
+        &quot;&quot;&quot;
+        self.num_requests += 1
+    
+        timeout_obj = self._get_timeout(timeout)
+        timeout_obj.start_connect()
+        conn.timeout = timeout_obj.connect_timeout
+    
+        # Trigger any extra validation we need to do.
+        try:
+            self._validate_conn(conn)
+        except (SocketTimeout, BaseSSLError) as e:
+            # Py2 raises this as a BaseSSLError, Py3 raises it as socket timeout.
+            self._raise_timeout(err=e, url=url, timeout_value=conn.timeout)
+            raise
+    
+        # conn.request() calls httplib.*.request, not the method in
+        # urllib3.request. It also calls makefile (recv) on the socket.
+        if chunked:
+            conn.request_chunked(method, url, **httplib_request_kw)
+        else:
+            conn.request(method, url, **httplib_request_kw)
+    
+        # Reset the timeout for the recv() on the socket
+        read_timeout = timeout_obj.read_timeout
+    
+        # App Engine doesn&apos;t have a sock attr
+        if getattr(conn, &quot;sock&quot;, None):
+            # In Python 3 socket.py will catch EAGAIN and return None when you
+            # try and read into the file pointer created by http.client, which
+            # instead raises a BadStatusLine exception. Instead of catching
+            # the exception and assuming all BadStatusLine exceptions are read
+            # timeouts, check for a zero timeout before making the request.
+            if read_timeout == 0:
+                raise ReadTimeoutError(
+                    self, url, &quot;Read timed out. (read timeout=%s)&quot; % read_timeout
+                )
+            if read_timeout is Timeout.DEFAULT_TIMEOUT:
+                conn.sock.settimeout(socket.getdefaulttimeout())
+            else:  # None or a value
+                conn.sock.settimeout(read_timeout)
+    
+        # Receive the response from the server
+        try:
+            try:
+                # Python 2.7, use buffering of HTTP responses
+                httplib_response = conn.getresponse(buffering=True)
+            except TypeError:
+                # Python 3
+                try:
+                    httplib_response = conn.getresponse()
+                except BaseException as e:
+                    # Remove the TypeError from the exception chain in
+                    # Python 3 (including for exceptions like SystemExit).
+                    # Otherwise it looks like a bug in the code.
+&gt;                   six.raise_from(e, None)
+
+..\venv\lib\site-packages\urllib3\connectionpool.py:421: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = None, from_value = None
+
+&gt;   ???
+
+&lt;string&gt;:3: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.connectionpool.HTTPConnectionPool object at 0x000001F170C15F48&gt;, conn = &lt;urllib3.connection.HTTPConnection object at 0x000001F170C22088&gt;, method = &apos;POST&apos;, url = &apos;/session&apos;
+timeout = &lt;urllib3.util.timeout.Timeout object at 0x000001F170C15E88&gt;, chunked = False
+httplib_request_kw = {&apos;body&apos;: &apos;{&quot;capabilities&quot;: {&quot;firstMatch&quot;: [{}], &quot;alwaysMatch&quot;: {&quot;browserName&quot;: &quot;chrome&quot;, &quot;platformName&quot;: &quot;any&quot;, &quot;goog:...n&apos;: &apos;keep-alive&apos;, &apos;Content-Type&apos;: &apos;application/json;charset=UTF-8&apos;, &apos;User-Agent&apos;: &apos;selenium/3.141.0 (python windows)&apos;}}
+timeout_obj = &lt;urllib3.util.timeout.Timeout object at 0x000001F170C22708&gt;, read_timeout = &lt;object object at 0x000001F16BEA22D0&gt;
+
+    def _make_request(
+        self, conn, method, url, timeout=_Default, chunked=False, **httplib_request_kw
+    ):
+        &quot;&quot;&quot;
+        Perform a request on a given urllib connection object taken from our
+        pool.
+    
+        :param conn:
+            a connection from one of our connection pools
+    
+        :param timeout:
+            Socket timeout in seconds for the request. This can be a
+            float or integer, which will set the same timeout value for
+            the socket connect and the socket read, or an instance of
+            :class:`urllib3.util.Timeout`, which gives you more fine-grained
+            control over your timeouts.
+        &quot;&quot;&quot;
+        self.num_requests += 1
+    
+        timeout_obj = self._get_timeout(timeout)
+        timeout_obj.start_connect()
+        conn.timeout = timeout_obj.connect_timeout
+    
+        # Trigger any extra validation we need to do.
+        try:
+            self._validate_conn(conn)
+        except (SocketTimeout, BaseSSLError) as e:
+            # Py2 raises this as a BaseSSLError, Py3 raises it as socket timeout.
+            self._raise_timeout(err=e, url=url, timeout_value=conn.timeout)
+            raise
+    
+        # conn.request() calls httplib.*.request, not the method in
+        # urllib3.request. It also calls makefile (recv) on the socket.
+        if chunked:
+            conn.request_chunked(method, url, **httplib_request_kw)
+        else:
+            conn.request(method, url, **httplib_request_kw)
+    
+        # Reset the timeout for the recv() on the socket
+        read_timeout = timeout_obj.read_timeout
+    
+        # App Engine doesn&apos;t have a sock attr
+        if getattr(conn, &quot;sock&quot;, None):
+            # In Python 3 socket.py will catch EAGAIN and return None when you
+            # try and read into the file pointer created by http.client, which
+            # instead raises a BadStatusLine exception. Instead of catching
+            # the exception and assuming all BadStatusLine exceptions are read
+            # timeouts, check for a zero timeout before making the request.
+            if read_timeout == 0:
+                raise ReadTimeoutError(
+                    self, url, &quot;Read timed out. (read timeout=%s)&quot; % read_timeout
+                )
+            if read_timeout is Timeout.DEFAULT_TIMEOUT:
+                conn.sock.settimeout(socket.getdefaulttimeout())
+            else:  # None or a value
+                conn.sock.settimeout(read_timeout)
+    
+        # Receive the response from the server
+        try:
+            try:
+                # Python 2.7, use buffering of HTTP responses
+                httplib_response = conn.getresponse(buffering=True)
+            except TypeError:
+                # Python 3
+                try:
+&gt;                   httplib_response = conn.getresponse()
+
+..\venv\lib\site-packages\urllib3\connectionpool.py:416: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;urllib3.connection.HTTPConnection object at 0x000001F170C22088&gt;
+
+    def getresponse(self):
+        &quot;&quot;&quot;Get the response from the server.
+    
+        If the HTTPConnection is in the correct state, returns an
+        instance of HTTPResponse or of whatever object is returned by
+        the response_class variable.
+    
+        If a request has not been sent or if a previous response has
+        not be handled, ResponseNotReady is raised.  If the HTTP
+        response indicates that the connection should be closed, then
+        it will be closed before the response is returned.  When the
+        connection is closed, the underlying socket is closed.
+        &quot;&quot;&quot;
+    
+        # if a prior response has been completed, then forget about it.
+        if self.__response and self.__response.isclosed():
+            self.__response = None
+    
+        # if a prior response exists, then it must be completed (otherwise, we
+        # cannot read this response&apos;s header to determine the connection-close
+        # behavior)
+        #
+        # note: if a prior response existed, but was connection-close, then the
+        # socket and response were made independent of this HTTPConnection
+        # object since a new request requires that we open a whole new
+        # connection
+        #
+        # this means the prior response had one of two states:
+        #   1) will_close: this connection was reset and the prior socket and
+        #                  response operate independently
+        #   2) persistent: the response was retained and we await its
+        #                  isclosed() status to become true.
+        #
+        if self.__state != _CS_REQ_SENT or self.__response:
+            raise ResponseNotReady(self.__state)
+    
+        if self.debuglevel &gt; 0:
+            response = self.response_class(self.sock, self.debuglevel,
+                                           method=self._method)
+        else:
+            response = self.response_class(self.sock, method=self._method)
+    
+        try:
+            try:
+&gt;               response.begin()
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\http\client.py:1336: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;http.client.HTTPResponse object at 0x000001F170C226C8&gt;
+
+    def begin(self):
+        if self.headers is not None:
+            # we&apos;ve already started reading the response
+            return
+    
+        # read until we get a non-100 response
+        while True:
+&gt;           version, status, reason = self._read_status()
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\http\client.py:306: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;http.client.HTTPResponse object at 0x000001F170C226C8&gt;
+
+    def _read_status(self):
+&gt;       line = str(self.fp.readline(_MAXLINE + 1), &quot;iso-8859-1&quot;)
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\http\client.py:267: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;socket.SocketIO object at 0x000001F170C22648&gt;, b = &lt;memory at 0x000001F170B1EDC8&gt;
+
+    def readinto(self, b):
+        &quot;&quot;&quot;Read up to len(b) bytes into the writable buffer *b* and return
+        the number of bytes read.  If the socket is non-blocking and no bytes
+        are available, None is returned.
+    
+        If *b* is non-empty, a 0 return value indicates that the connection
+        was shutdown at the other end.
+        &quot;&quot;&quot;
+        self._checkClosed()
+        self._checkReadable()
+        if self._timeout_occurred:
+            raise OSError(&quot;cannot read from timed out object&quot;)
+        while True:
+            try:
+&gt;               return self._sock.recv_into(b)
+E               KeyboardInterrupt
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\socket.py:589: KeyboardInterrupt
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    @pytest.mark.usefixtures(*function_args)
+    def scenario_wrapper(request):
+&gt;       _execute_scenario(feature, scenario, request, encoding)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\pytest_bdd\scenario.py:194: in _execute_scenario
+    scenario=scenario,
+..\venv\lib\site-packages\pluggy\hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:87: in &lt;lambda&gt;
+    firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x000001F170BCDE48&gt;, scenario = &lt;pytest_bdd.feature.Scenario object at 0x000001F170BD5248&gt;
+
+    def pytest_bdd_after_scenario(request, feature, scenario):
+        &quot;&quot;&quot;- Called after scenario is executed (even if one of steps has failed)&quot;&quot;&quot;
+        save_screen_file_name = datetime.datetime.now().strftime(&quot;%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         save_screen_file_name)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+conftest.py:28: AttributeError</failure></testcase><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]" time="0.000"></testcase></testsuite></testsuites>
