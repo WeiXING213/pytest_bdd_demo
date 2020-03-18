@@ -3,7 +3,7 @@ from selenium import webdriver
 from pageObjects import page
 import pytest
 import sys
-from .devices_steps import *
+#from .devices_steps import *
 from .pages_steps import *
 
 CONVERTERS = {
