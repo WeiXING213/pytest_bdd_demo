@@ -32,5 +32,5 @@ steps:
 - bash: |
     cd steps
     pytest bdd_steps.py
-  displayName: 'Run BDD tests'
+  displayName: 'Run BDD tests.'
 
