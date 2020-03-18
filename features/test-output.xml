@@ -1,1 +1,3472 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="0" hostname="WXING-F" name="pytest" skipped="0" tests="3" time="102.174" timestamp="2020-03-18T15:00:01.775415"><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]" time="27.327"></testcase><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]" time="28.088"></testcase><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]" time="46.645"></testcase></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite errors="0" failures="3" hostname="WXING-F" name="pytest" skipped="0" tests="3" time="0.904" timestamp="2020-03-18T15:24:46.436249"><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]" time="0.006"><failure message="AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;">self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A248C3208&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+&gt;                                           stdin=PIPE)
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A248C3708&gt;
+args = [&apos;..\\chromeDriver\\xchromedriver.exe&apos;, &apos;--port=54499&apos;], bufsize = -1
+executable = None, stdin = -1, stdout = -3, stderr = -3, preexec_fn = None
+close_fds = False, shell = False, cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ...T&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;] (call)&apos;})
+universal_newlines = None, startupinfo = None, creationflags = 0
+restore_signals = True, start_new_session = False, pass_fds = ()
+
+    def __init__(self, args, bufsize=-1, executable=None,
+                 stdin=None, stdout=None, stderr=None,
+                 preexec_fn=None, close_fds=True,
+                 shell=False, cwd=None, env=None, universal_newlines=None,
+                 startupinfo=None, creationflags=0,
+                 restore_signals=True, start_new_session=False,
+                 pass_fds=(), *, encoding=None, errors=None, text=None):
+        &quot;&quot;&quot;Create new Popen instance.&quot;&quot;&quot;
+        _cleanup()
+        # Held while anything is calling waitpid before returncode has been
+        # updated to prevent clobbering returncode if wait() or poll() are
+        # called from multiple threads at once.  After acquiring the lock,
+        # code must re-check self.returncode to see if another thread just
+        # finished a waitpid() call.
+        self._waitpid_lock = threading.Lock()
+    
+        self._input = None
+        self._communication_started = False
+        if bufsize is None:
+            bufsize = -1  # Restore default
+        if not isinstance(bufsize, int):
+            raise TypeError(&quot;bufsize must be an integer&quot;)
+    
+        if _mswindows:
+            if preexec_fn is not None:
+                raise ValueError(&quot;preexec_fn is not supported on Windows &quot;
+                                 &quot;platforms&quot;)
+        else:
+            # POSIX
+            if pass_fds and not close_fds:
+                warnings.warn(&quot;pass_fds overriding close_fds.&quot;, RuntimeWarning)
+                close_fds = True
+            if startupinfo is not None:
+                raise ValueError(&quot;startupinfo is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+            if creationflags != 0:
+                raise ValueError(&quot;creationflags is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+    
+        self.args = args
+        self.stdin = None
+        self.stdout = None
+        self.stderr = None
+        self.pid = None
+        self.returncode = None
+        self.encoding = encoding
+        self.errors = errors
+    
+        # Validate the combinations of text and universal_newlines
+        if (text is not None and universal_newlines is not None
+            and bool(universal_newlines) != bool(text)):
+            raise SubprocessError(&apos;Cannot disambiguate when both text &apos;
+                                  &apos;and universal_newlines are supplied but &apos;
+                                  &apos;different. Pass one or the other.&apos;)
+    
+        # Input and output objects. The general principle is like
+        # this:
+        #
+        # Parent                   Child
+        # ------                   -----
+        # p2cwrite   ---stdin---&gt;  p2cread
+        # c2pread    &lt;--stdout---  c2pwrite
+        # errread    &lt;--stderr---  errwrite
+        #
+        # On POSIX, the child objects are file descriptors.  On
+        # Windows, these are Windows file handles.  The parent objects
+        # are file descriptors on both platforms.  The parent objects
+        # are -1 when not using PIPEs. The child objects are -1
+        # when not redirecting.
+    
+        (p2cread, p2cwrite,
+         c2pread, c2pwrite,
+         errread, errwrite) = self._get_handles(stdin, stdout, stderr)
+    
+        # We wrap OS handles *before* launching the child, otherwise a
+        # quickly terminating child could make our fds unwrappable
+        # (see #8458).
+    
+        if _mswindows:
+            if p2cwrite != -1:
+                p2cwrite = msvcrt.open_osfhandle(p2cwrite.Detach(), 0)
+            if c2pread != -1:
+                c2pread = msvcrt.open_osfhandle(c2pread.Detach(), 0)
+            if errread != -1:
+                errread = msvcrt.open_osfhandle(errread.Detach(), 0)
+    
+        self.text_mode = encoding or errors or text or universal_newlines
+    
+        # How long to resume waiting on a child after the first ^C.
+        # There is no right value for this.  The purpose is to be polite
+        # yet remain good for interactive users trying to exit a tool.
+        self._sigint_wait_secs = 0.25  # 1/xkcd221.getRandomNumber()
+    
+        self._closed_child_pipe_fds = False
+    
+        try:
+            if p2cwrite != -1:
+                self.stdin = io.open(p2cwrite, &apos;wb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdin = io.TextIOWrapper(self.stdin, write_through=True,
+                            line_buffering=(bufsize == 1),
+                            encoding=encoding, errors=errors)
+            if c2pread != -1:
+                self.stdout = io.open(c2pread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdout = io.TextIOWrapper(self.stdout,
+                            encoding=encoding, errors=errors)
+            if errread != -1:
+                self.stderr = io.open(errread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stderr = io.TextIOWrapper(self.stderr,
+                            encoding=encoding, errors=errors)
+    
+            self._execute_child(args, executable, preexec_fn, close_fds,
+                                pass_fds, cwd, env,
+                                startupinfo, creationflags, shell,
+                                p2cread, p2cwrite,
+                                c2pread, c2pwrite,
+                                errread, errwrite,
+&gt;                               restore_signals, start_new_session)
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:775: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A248C3708&gt;
+args = &apos;..\\chromeDriver\\xchromedriver.exe --port=54499&apos;, executable = None
+preexec_fn = None, close_fds = False, pass_fds = (), cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ...T&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;] (call)&apos;})
+startupinfo = &lt;subprocess.STARTUPINFO object at 0x0000018A248C3688&gt;
+creationflags = 0, shell = False, p2cread = Handle(664), p2cwrite = 11
+c2pread = -1, c2pwrite = Handle(852), errread = -1, errwrite = Handle(584)
+unused_restore_signals = True, unused_start_new_session = False
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       unused_restore_signals, unused_start_new_session):
+        &quot;&quot;&quot;Execute program (MS Windows version)&quot;&quot;&quot;
+    
+        assert not pass_fds, &quot;pass_fds not supported on Windows.&quot;
+    
+        if not isinstance(args, str):
+            args = list2cmdline(args)
+    
+        # Process startup details
+        if startupinfo is None:
+            startupinfo = STARTUPINFO()
+        else:
+            # bpo-34044: Copy STARTUPINFO since it is modified above,
+            # so the caller can reuse it multiple times.
+            startupinfo = startupinfo._copy()
+    
+        use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
+        if use_std_handles:
+            startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
+            startupinfo.hStdInput = p2cread
+            startupinfo.hStdOutput = c2pwrite
+            startupinfo.hStdError = errwrite
+    
+        attribute_list = startupinfo.lpAttributeList
+        have_handle_list = bool(attribute_list and
+                                &quot;handle_list&quot; in attribute_list and
+                                attribute_list[&quot;handle_list&quot;])
+    
+        # If we were given an handle_list or need to create one
+        if have_handle_list or (use_std_handles and close_fds):
+            if attribute_list is None:
+                attribute_list = startupinfo.lpAttributeList = {}
+            handle_list = attribute_list[&quot;handle_list&quot;] = \
+                list(attribute_list.get(&quot;handle_list&quot;, []))
+    
+            if use_std_handles:
+                handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
+    
+            handle_list[:] = self._filter_handle_list(handle_list)
+    
+            if handle_list:
+                if not close_fds:
+                    warnings.warn(&quot;startupinfo.lpAttributeList[&apos;handle_list&apos;] &quot;
+                                  &quot;overriding close_fds&quot;, RuntimeWarning)
+    
+                # When using the handle_list we always request to inherit
+                # handles but the only handles that will be inherited are
+                # the ones in the handle_list
+                close_fds = False
+    
+        if shell:
+            startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = _winapi.SW_HIDE
+            comspec = os.environ.get(&quot;COMSPEC&quot;, &quot;cmd.exe&quot;)
+            args = &apos;{} /c &quot;{}&quot;&apos;.format (comspec, args)
+    
+        # Start the process
+        try:
+            hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                                     # no special security
+                                     None, None,
+                                     int(not close_fds),
+                                     creationflags,
+                                     env,
+                                     os.fspath(cwd) if cwd is not None else None,
+&gt;                                    startupinfo)
+E                                    FileNotFoundError: [WinError 2] Le fichier spécifié est introuvable
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:1178: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+&gt;           step_func(**kwargs)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def step_func(request):
+&gt;       result = request.getfixturevalue(func.__name__)
+
+..\venv\lib\site-packages\pytest_bdd\steps.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def getfixturevalue(self, argname):
+        &quot;&quot;&quot; Dynamically run a named fixture function.
+    
+        Declaring fixtures via function argument is recommended where possible.
+        But if you can only decide whether to use another fixture at test
+        setup time, you may use this function to retrieve it inside a fixture
+        or test function body.
+        &quot;&quot;&quot;
+&gt;       return self._get_active_fixturedef(argname).cached_result[0]
+
+..\venv\lib\site-packages\_pytest\fixtures.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+request = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+&gt;           fixturedef = request._get_active_fixturedef(argname)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:889: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+argname = &apos;chromeBrowser&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+            fixturedef = request._get_active_fixturedef(argname)
+            if argname != &quot;request&quot;:
+                fixturedef.addfinalizer(functools.partial(self.finish, request=request))
+    
+        my_cache_key = self.cache_key(request)
+        cached_result = getattr(self, &quot;cached_result&quot;, None)
+        if cached_result is not None:
+            result, cache_key, err = cached_result
+            if my_cache_key == cache_key:
+                if err is not None:
+                    _, val, tb = err
+                    raise val.with_traceback(tb)
+                else:
+                    return result
+            # we have a previous but differently parametrized fixture instance
+            # so we need to tear it down before creating a new one
+            self.finish(request)
+            assert not hasattr(self, &quot;cached_result&quot;)
+    
+        hook = self._fixturemanager.session.gethookproxy(request.node.fspath)
+&gt;       return hook.pytest_fixture_setup(fixturedef=self, request=request)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:909: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;, args = ()
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A248AE788&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    def pytest_fixture_setup(fixturedef, request):
+        &quot;&quot;&quot; Execution of fixture setup. &quot;&quot;&quot;
+        kwargs = {}
+        for argname in fixturedef.argnames:
+            fixdef = request._get_active_fixturedef(argname)
+            result, arg_cache_key, exc = fixdef.cached_result
+            request._check_scope(argname, request.scope, fixdef.scope)
+            kwargs[argname] = result
+    
+        fixturefunc = resolve_fixture_function(fixturedef, request)
+        my_cache_key = fixturedef.cache_key(request)
+        try:
+&gt;           result = call_fixture_func(fixturefunc, request, kwargs)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:958: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturefunc = &lt;function chromeBrowser at 0x0000018A2471DB88&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+kwargs = {}
+
+    def call_fixture_func(fixturefunc, request, kwargs):
+        yieldctx = is_generator(fixturefunc)
+        if yieldctx:
+            it = fixturefunc(**kwargs)
+&gt;           res = next(it)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:784: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    def chromeBrowser():
+        global BROWSER
+    
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option(&apos;prefs&apos;, {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;})
+    
+        BROWSER = webdriver.Chrome(&quot;..\\chromeDriver\\xchromedriver.exe&quot;,
+&gt;                                  chrome_options=options)
+
+..\steps\conftest.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError(&quot;&apos;WebDriver&apos; object has no attribute &apos;session_id&apos;&quot;) raised in repr()] WebDriver object at 0x18a248c3848&gt;
+executable_path = &apos;..\\chromeDriver\\xchromedriver.exe&apos;, port = 0
+options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A248C31C8&gt;
+service_args = None
+desired_capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+service_log_path = None
+chrome_options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A248C31C8&gt;
+keep_alive = True
+
+    def __init__(self, executable_path=&quot;chromedriver&quot;, port=0,
+                 options=None, service_args=None,
+                 desired_capabilities=None, service_log_path=None,
+                 chrome_options=None, keep_alive=True):
+        &quot;&quot;&quot;
+        Creates a new instance of the chrome driver.
+    
+        Starts the service and then creates new instance of chrome driver.
+    
+        :Args:
+         - executable_path - path to the executable. If the default is used it assumes the executable is in the $PATH
+         - port - port you would like the service to run, if left as 0, a free port will be found.
+         - options - this takes an instance of ChromeOptions
+         - service_args - List of args to pass to the driver service
+         - desired_capabilities - Dictionary object with non-browser specific
+           capabilities only, such as &quot;proxy&quot; or &quot;loggingPref&quot;.
+         - service_log_path - Where to log information from the driver.
+         - chrome_options - Deprecated argument for options
+         - keep_alive - Whether to configure ChromeRemoteConnection to use HTTP keep-alive.
+        &quot;&quot;&quot;
+        if chrome_options:
+            warnings.warn(&apos;use options instead of chrome_options&apos;,
+                          DeprecationWarning, stacklevel=2)
+            options = chrome_options
+    
+        if options is None:
+            # desired_capabilities stays as passed in
+            if desired_capabilities is None:
+                desired_capabilities = self.create_options().to_capabilities()
+        else:
+            if desired_capabilities is None:
+                desired_capabilities = options.to_capabilities()
+            else:
+                desired_capabilities.update(options.to_capabilities())
+    
+        self.service = Service(
+            executable_path,
+            port=port,
+            service_args=service_args,
+            log_path=service_log_path)
+&gt;       self.service.start()
+
+..\venv\lib\site-packages\selenium\webdriver\chrome\webdriver.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A248C3208&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+                                            stdin=PIPE)
+        except TypeError:
+            raise
+        except OSError as err:
+            if err.errno == errno.ENOENT:
+                raise WebDriverException(
+                    &quot;&apos;%s&apos; executable needs to be in PATH. %s&quot; % (
+&gt;                       os.path.basename(self.path), self.start_error_message)
+E                       selenium.common.exceptions.WebDriverException: Message: &apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:83: WebDriverException
+
+During handling of the above exception, another exception occurred:
+
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+encoding = &apos;utf-8&apos;
+
+    def _execute_scenario(feature, scenario, request, encoding):
+        &quot;&quot;&quot;Execute the scenario.
+    
+        :param feature: Feature.
+        :param scenario: Scenario.
+        :param request: request.
+        :param encoding: Encoding.
+        &quot;&quot;&quot;
+        request.config.hook.pytest_bdd_before_scenario(
+            request=request,
+            feature=feature,
+            scenario=scenario,
+        )
+    
+        try:
+            givens = set()
+            # Execute scenario steps
+            for step in scenario.steps:
+                try:
+                    step_func = _find_step_function(request, step, scenario, encoding=encoding)
+                except exceptions.StepDefinitionNotFoundError as exception:
+                    request.config.hook.pytest_bdd_step_func_lookup_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        exception=exception,
+                    )
+                    raise
+    
+                try:
+                    # Check if the fixture that implements given step has not been yet used by another given step
+                    if step.type == GIVEN:
+                        if step_func.fixture in givens:
+                            raise exceptions.GivenAlreadyUsed(
+                                u&apos;Fixture &quot;{0}&quot; that implements this &quot;{1}&quot; given step has been already used.&apos;.format(
+                                    step_func.fixture, step.name,
+                                )
+                            )
+                        givens.add(step_func.fixture)
+                except exceptions.ScenarioValidationError as exception:
+                    request.config.hook.pytest_bdd_step_validation_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        step_func=step_func,
+                        exception=exception,
+                        step_func_args=dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func)),
+                    )
+                    raise
+    
+&gt;               _execute_step_function(request, scenario, step, step_func)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+            step_func(**kwargs)
+            request.config.hook.pytest_bdd_after_step(**kw)
+        except Exception as exception:
+&gt;           request.config.hook.pytest_bdd_step_error(exception=exception, **kw)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;, args = ()
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.....oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.....oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.....oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.....oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A248C3948&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.....oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+step_func_args = {&apos;request&apos;: &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;}
+exception = WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home&quot;)
+
+    def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+        &quot;&quot;&quot;- Called when step function failed to execute, exception goes here, assert&quot;&quot;&quot;
+        name = str(step.name).replace(&quot; &quot;, &quot;_&quot;).replace(&quot;&lt;&quot;, &quot;_&quot;).replace(&quot;&gt;&quot;, &quot;_&quot;)
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         name + datetime.datetime.now().strftime(&quot;-%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:49: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+
+    @pytest.mark.usefixtures(*function_args)
+    def scenario_wrapper(request):
+&gt;       _execute_scenario(feature, scenario, request, encoding)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\pytest_bdd\scenario.py:194: in _execute_scenario
+    scenario=scenario,
+..\venv\lib\site-packages\pluggy\hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:87: in &lt;lambda&gt;
+    firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-&lt;default&gt;-&lt;default&gt;]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+
+    def pytest_bdd_after_scenario(request, feature, scenario):
+        &quot;&quot;&quot;- Called after scenario is executed (even if one of steps has failed)&quot;&quot;&quot;
+        save_screen_file_name = datetime.datetime.now().strftime(&quot;%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         save_screen_file_name)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:28: AttributeError</failure></testcase><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]" time="0.005"><failure message="AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;">self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A24A5A408&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+&gt;                                           stdin=PIPE)
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A24A5A7C8&gt;
+args = [&apos;..\\chromeDriver\\xchromedriver.exe&apos;, &apos;--port=54500&apos;], bufsize = -1
+executable = None, stdin = -1, stdout = -3, stderr = -3, preexec_fn = None
+close_fds = False, shell = False, cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ..._CURRENT_TEST&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd] (call)&apos;})
+universal_newlines = None, startupinfo = None, creationflags = 0
+restore_signals = True, start_new_session = False, pass_fds = ()
+
+    def __init__(self, args, bufsize=-1, executable=None,
+                 stdin=None, stdout=None, stderr=None,
+                 preexec_fn=None, close_fds=True,
+                 shell=False, cwd=None, env=None, universal_newlines=None,
+                 startupinfo=None, creationflags=0,
+                 restore_signals=True, start_new_session=False,
+                 pass_fds=(), *, encoding=None, errors=None, text=None):
+        &quot;&quot;&quot;Create new Popen instance.&quot;&quot;&quot;
+        _cleanup()
+        # Held while anything is calling waitpid before returncode has been
+        # updated to prevent clobbering returncode if wait() or poll() are
+        # called from multiple threads at once.  After acquiring the lock,
+        # code must re-check self.returncode to see if another thread just
+        # finished a waitpid() call.
+        self._waitpid_lock = threading.Lock()
+    
+        self._input = None
+        self._communication_started = False
+        if bufsize is None:
+            bufsize = -1  # Restore default
+        if not isinstance(bufsize, int):
+            raise TypeError(&quot;bufsize must be an integer&quot;)
+    
+        if _mswindows:
+            if preexec_fn is not None:
+                raise ValueError(&quot;preexec_fn is not supported on Windows &quot;
+                                 &quot;platforms&quot;)
+        else:
+            # POSIX
+            if pass_fds and not close_fds:
+                warnings.warn(&quot;pass_fds overriding close_fds.&quot;, RuntimeWarning)
+                close_fds = True
+            if startupinfo is not None:
+                raise ValueError(&quot;startupinfo is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+            if creationflags != 0:
+                raise ValueError(&quot;creationflags is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+    
+        self.args = args
+        self.stdin = None
+        self.stdout = None
+        self.stderr = None
+        self.pid = None
+        self.returncode = None
+        self.encoding = encoding
+        self.errors = errors
+    
+        # Validate the combinations of text and universal_newlines
+        if (text is not None and universal_newlines is not None
+            and bool(universal_newlines) != bool(text)):
+            raise SubprocessError(&apos;Cannot disambiguate when both text &apos;
+                                  &apos;and universal_newlines are supplied but &apos;
+                                  &apos;different. Pass one or the other.&apos;)
+    
+        # Input and output objects. The general principle is like
+        # this:
+        #
+        # Parent                   Child
+        # ------                   -----
+        # p2cwrite   ---stdin---&gt;  p2cread
+        # c2pread    &lt;--stdout---  c2pwrite
+        # errread    &lt;--stderr---  errwrite
+        #
+        # On POSIX, the child objects are file descriptors.  On
+        # Windows, these are Windows file handles.  The parent objects
+        # are file descriptors on both platforms.  The parent objects
+        # are -1 when not using PIPEs. The child objects are -1
+        # when not redirecting.
+    
+        (p2cread, p2cwrite,
+         c2pread, c2pwrite,
+         errread, errwrite) = self._get_handles(stdin, stdout, stderr)
+    
+        # We wrap OS handles *before* launching the child, otherwise a
+        # quickly terminating child could make our fds unwrappable
+        # (see #8458).
+    
+        if _mswindows:
+            if p2cwrite != -1:
+                p2cwrite = msvcrt.open_osfhandle(p2cwrite.Detach(), 0)
+            if c2pread != -1:
+                c2pread = msvcrt.open_osfhandle(c2pread.Detach(), 0)
+            if errread != -1:
+                errread = msvcrt.open_osfhandle(errread.Detach(), 0)
+    
+        self.text_mode = encoding or errors or text or universal_newlines
+    
+        # How long to resume waiting on a child after the first ^C.
+        # There is no right value for this.  The purpose is to be polite
+        # yet remain good for interactive users trying to exit a tool.
+        self._sigint_wait_secs = 0.25  # 1/xkcd221.getRandomNumber()
+    
+        self._closed_child_pipe_fds = False
+    
+        try:
+            if p2cwrite != -1:
+                self.stdin = io.open(p2cwrite, &apos;wb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdin = io.TextIOWrapper(self.stdin, write_through=True,
+                            line_buffering=(bufsize == 1),
+                            encoding=encoding, errors=errors)
+            if c2pread != -1:
+                self.stdout = io.open(c2pread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdout = io.TextIOWrapper(self.stdout,
+                            encoding=encoding, errors=errors)
+            if errread != -1:
+                self.stderr = io.open(errread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stderr = io.TextIOWrapper(self.stderr,
+                            encoding=encoding, errors=errors)
+    
+            self._execute_child(args, executable, preexec_fn, close_fds,
+                                pass_fds, cwd, env,
+                                startupinfo, creationflags, shell,
+                                p2cread, p2cwrite,
+                                c2pread, c2pwrite,
+                                errread, errwrite,
+&gt;                               restore_signals, start_new_session)
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:775: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A24A5A7C8&gt;
+args = &apos;..\\chromeDriver\\xchromedriver.exe --port=54500&apos;, executable = None
+preexec_fn = None, close_fds = False, pass_fds = (), cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ..._CURRENT_TEST&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd] (call)&apos;})
+startupinfo = &lt;subprocess.STARTUPINFO object at 0x0000018A24A6A588&gt;
+creationflags = 0, shell = False, p2cread = Handle(664), p2cwrite = 11
+c2pread = -1, c2pwrite = Handle(648), errread = -1, errwrite = Handle(632)
+unused_restore_signals = True, unused_start_new_session = False
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       unused_restore_signals, unused_start_new_session):
+        &quot;&quot;&quot;Execute program (MS Windows version)&quot;&quot;&quot;
+    
+        assert not pass_fds, &quot;pass_fds not supported on Windows.&quot;
+    
+        if not isinstance(args, str):
+            args = list2cmdline(args)
+    
+        # Process startup details
+        if startupinfo is None:
+            startupinfo = STARTUPINFO()
+        else:
+            # bpo-34044: Copy STARTUPINFO since it is modified above,
+            # so the caller can reuse it multiple times.
+            startupinfo = startupinfo._copy()
+    
+        use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
+        if use_std_handles:
+            startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
+            startupinfo.hStdInput = p2cread
+            startupinfo.hStdOutput = c2pwrite
+            startupinfo.hStdError = errwrite
+    
+        attribute_list = startupinfo.lpAttributeList
+        have_handle_list = bool(attribute_list and
+                                &quot;handle_list&quot; in attribute_list and
+                                attribute_list[&quot;handle_list&quot;])
+    
+        # If we were given an handle_list or need to create one
+        if have_handle_list or (use_std_handles and close_fds):
+            if attribute_list is None:
+                attribute_list = startupinfo.lpAttributeList = {}
+            handle_list = attribute_list[&quot;handle_list&quot;] = \
+                list(attribute_list.get(&quot;handle_list&quot;, []))
+    
+            if use_std_handles:
+                handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
+    
+            handle_list[:] = self._filter_handle_list(handle_list)
+    
+            if handle_list:
+                if not close_fds:
+                    warnings.warn(&quot;startupinfo.lpAttributeList[&apos;handle_list&apos;] &quot;
+                                  &quot;overriding close_fds&quot;, RuntimeWarning)
+    
+                # When using the handle_list we always request to inherit
+                # handles but the only handles that will be inherited are
+                # the ones in the handle_list
+                close_fds = False
+    
+        if shell:
+            startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = _winapi.SW_HIDE
+            comspec = os.environ.get(&quot;COMSPEC&quot;, &quot;cmd.exe&quot;)
+            args = &apos;{} /c &quot;{}&quot;&apos;.format (comspec, args)
+    
+        # Start the process
+        try:
+            hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                                     # no special security
+                                     None, None,
+                                     int(not close_fds),
+                                     creationflags,
+                                     env,
+                                     os.fspath(cwd) if cwd is not None else None,
+&gt;                                    startupinfo)
+E                                    FileNotFoundError: [WinError 2] Le fichier spécifié est introuvable
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:1178: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+&gt;           step_func(**kwargs)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+
+    def step_func(request):
+&gt;       result = request.getfixturevalue(func.__name__)
+
+..\venv\lib\site-packages\pytest_bdd\steps.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def getfixturevalue(self, argname):
+        &quot;&quot;&quot; Dynamically run a named fixture function.
+    
+        Declaring fixtures via function argument is recommended where possible.
+        But if you can only decide whether to use another fixture at test
+        setup time, you may use this function to retrieve it inside a fixture
+        or test function body.
+        &quot;&quot;&quot;
+&gt;       return self._get_active_fixturedef(argname).cached_result[0]
+
+..\venv\lib\site-packages\_pytest\fixtures.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+request = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+&gt;           fixturedef = request._get_active_fixturedef(argname)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:889: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+argname = &apos;chromeBrowser&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+            fixturedef = request._get_active_fixturedef(argname)
+            if argname != &quot;request&quot;:
+                fixturedef.addfinalizer(functools.partial(self.finish, request=request))
+    
+        my_cache_key = self.cache_key(request)
+        cached_result = getattr(self, &quot;cached_result&quot;, None)
+        if cached_result is not None:
+            result, cache_key, err = cached_result
+            if my_cache_key == cache_key:
+                if err is not None:
+                    _, val, tb = err
+                    raise val.with_traceback(tb)
+                else:
+                    return result
+            # we have a previous but differently parametrized fixture instance
+            # so we need to tear it down before creating a new one
+            self.finish(request)
+            assert not hasattr(self, &quot;cached_result&quot;)
+    
+        hook = self._fixturemanager.session.gethookproxy(request.node.fspath)
+&gt;       return hook.pytest_fixture_setup(fixturedef=self, request=request)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:909: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;, args = ()
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A24A5AA88&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+
+    def pytest_fixture_setup(fixturedef, request):
+        &quot;&quot;&quot; Execution of fixture setup. &quot;&quot;&quot;
+        kwargs = {}
+        for argname in fixturedef.argnames:
+            fixdef = request._get_active_fixturedef(argname)
+            result, arg_cache_key, exc = fixdef.cached_result
+            request._check_scope(argname, request.scope, fixdef.scope)
+            kwargs[argname] = result
+    
+        fixturefunc = resolve_fixture_function(fixturedef, request)
+        my_cache_key = fixturedef.cache_key(request)
+        try:
+&gt;           result = call_fixture_func(fixturefunc, request, kwargs)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:958: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturefunc = &lt;function chromeBrowser at 0x0000018A2471DB88&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+kwargs = {}
+
+    def call_fixture_func(fixturefunc, request, kwargs):
+        yieldctx = is_generator(fixturefunc)
+        if yieldctx:
+            it = fixturefunc(**kwargs)
+&gt;           res = next(it)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:784: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    def chromeBrowser():
+        global BROWSER
+    
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option(&apos;prefs&apos;, {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;})
+    
+        BROWSER = webdriver.Chrome(&quot;..\\chromeDriver\\xchromedriver.exe&quot;,
+&gt;                                  chrome_options=options)
+
+..\steps\conftest.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError(&quot;&apos;WebDriver&apos; object has no attribute &apos;session_id&apos;&quot;) raised in repr()] WebDriver object at 0x18a24a5a788&gt;
+executable_path = &apos;..\\chromeDriver\\xchromedriver.exe&apos;, port = 0
+options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A24A5AC08&gt;
+service_args = None
+desired_capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+service_log_path = None
+chrome_options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A24A5AC08&gt;
+keep_alive = True
+
+    def __init__(self, executable_path=&quot;chromedriver&quot;, port=0,
+                 options=None, service_args=None,
+                 desired_capabilities=None, service_log_path=None,
+                 chrome_options=None, keep_alive=True):
+        &quot;&quot;&quot;
+        Creates a new instance of the chrome driver.
+    
+        Starts the service and then creates new instance of chrome driver.
+    
+        :Args:
+         - executable_path - path to the executable. If the default is used it assumes the executable is in the $PATH
+         - port - port you would like the service to run, if left as 0, a free port will be found.
+         - options - this takes an instance of ChromeOptions
+         - service_args - List of args to pass to the driver service
+         - desired_capabilities - Dictionary object with non-browser specific
+           capabilities only, such as &quot;proxy&quot; or &quot;loggingPref&quot;.
+         - service_log_path - Where to log information from the driver.
+         - chrome_options - Deprecated argument for options
+         - keep_alive - Whether to configure ChromeRemoteConnection to use HTTP keep-alive.
+        &quot;&quot;&quot;
+        if chrome_options:
+            warnings.warn(&apos;use options instead of chrome_options&apos;,
+                          DeprecationWarning, stacklevel=2)
+            options = chrome_options
+    
+        if options is None:
+            # desired_capabilities stays as passed in
+            if desired_capabilities is None:
+                desired_capabilities = self.create_options().to_capabilities()
+        else:
+            if desired_capabilities is None:
+                desired_capabilities = options.to_capabilities()
+            else:
+                desired_capabilities.update(options.to_capabilities())
+    
+        self.service = Service(
+            executable_path,
+            port=port,
+            service_args=service_args,
+            log_path=service_log_path)
+&gt;       self.service.start()
+
+..\venv\lib\site-packages\selenium\webdriver\chrome\webdriver.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A24A5A408&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+                                            stdin=PIPE)
+        except TypeError:
+            raise
+        except OSError as err:
+            if err.errno == errno.ENOENT:
+                raise WebDriverException(
+                    &quot;&apos;%s&apos; executable needs to be in PATH. %s&quot; % (
+&gt;                       os.path.basename(self.path), self.start_error_message)
+E                       selenium.common.exceptions.WebDriverException: Message: &apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:83: WebDriverException
+
+During handling of the above exception, another exception occurred:
+
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+encoding = &apos;utf-8&apos;
+
+    def _execute_scenario(feature, scenario, request, encoding):
+        &quot;&quot;&quot;Execute the scenario.
+    
+        :param feature: Feature.
+        :param scenario: Scenario.
+        :param request: request.
+        :param encoding: Encoding.
+        &quot;&quot;&quot;
+        request.config.hook.pytest_bdd_before_scenario(
+            request=request,
+            feature=feature,
+            scenario=scenario,
+        )
+    
+        try:
+            givens = set()
+            # Execute scenario steps
+            for step in scenario.steps:
+                try:
+                    step_func = _find_step_function(request, step, scenario, encoding=encoding)
+                except exceptions.StepDefinitionNotFoundError as exception:
+                    request.config.hook.pytest_bdd_step_func_lookup_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        exception=exception,
+                    )
+                    raise
+    
+                try:
+                    # Check if the fixture that implements given step has not been yet used by another given step
+                    if step.type == GIVEN:
+                        if step_func.fixture in givens:
+                            raise exceptions.GivenAlreadyUsed(
+                                u&apos;Fixture &quot;{0}&quot; that implements this &quot;{1}&quot; given step has been already used.&apos;.format(
+                                    step_func.fixture, step.name,
+                                )
+                            )
+                        givens.add(step_func.fixture)
+                except exceptions.ScenarioValidationError as exception:
+                    request.config.hook.pytest_bdd_step_validation_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        step_func=step_func,
+                        exception=exception,
+                        step_func_args=dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func)),
+                    )
+                    raise
+    
+&gt;               _execute_step_function(request, scenario, step, step_func)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+            step_func(**kwargs)
+            request.config.hook.pytest_bdd_after_step(**kw)
+        except Exception as exception:
+&gt;           request.config.hook.pytest_bdd_step_error(exception=exception, **kw)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;, args = ()
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A24A6A708&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+step_func_args = {&apos;request&apos;: &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;}
+exception = WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home&quot;)
+
+    def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+        &quot;&quot;&quot;- Called when step function failed to execute, exception goes here, assert&quot;&quot;&quot;
+        name = str(step.name).replace(&quot; &quot;, &quot;_&quot;).replace(&quot;&lt;&quot;, &quot;_&quot;).replace(&quot;&gt;&quot;, &quot;_&quot;)
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         name + datetime.datetime.now().strftime(&quot;-%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:49: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+
+    @pytest.mark.usefixtures(*function_args)
+    def scenario_wrapper(request):
+&gt;       _execute_scenario(feature, scenario, request, encoding)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\pytest_bdd\scenario.py:194: in _execute_scenario
+    scenario=scenario,
+..\venv\lib\site-packages\pluggy\hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:87: in &lt;lambda&gt;
+    firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-xxx-ddd]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+
+    def pytest_bdd_after_scenario(request, feature, scenario):
+        &quot;&quot;&quot;- Called after scenario is executed (even if one of steps has failed)&quot;&quot;&quot;
+        save_screen_file_name = datetime.datetime.now().strftime(&quot;%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         save_screen_file_name)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:28: AttributeError</failure></testcase><testcase classname="bdd_steps" file="..\venv\lib\site-packages\pytest_bdd\scenario.py" line="224" name="test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]" time="0.005"><failure message="AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;">self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A249E7388&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+&gt;                                           stdin=PIPE)
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A249E73C8&gt;
+args = [&apos;..\\chromeDriver\\xchromedriver.exe&apos;, &apos;--port=54501&apos;], bufsize = -1
+executable = None, stdin = -1, stdout = -3, stderr = -3, preexec_fn = None
+close_fds = False, shell = False, cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ..._CURRENT_TEST&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt] (call)&apos;})
+universal_newlines = None, startupinfo = None, creationflags = 0
+restore_signals = True, start_new_session = False, pass_fds = ()
+
+    def __init__(self, args, bufsize=-1, executable=None,
+                 stdin=None, stdout=None, stderr=None,
+                 preexec_fn=None, close_fds=True,
+                 shell=False, cwd=None, env=None, universal_newlines=None,
+                 startupinfo=None, creationflags=0,
+                 restore_signals=True, start_new_session=False,
+                 pass_fds=(), *, encoding=None, errors=None, text=None):
+        &quot;&quot;&quot;Create new Popen instance.&quot;&quot;&quot;
+        _cleanup()
+        # Held while anything is calling waitpid before returncode has been
+        # updated to prevent clobbering returncode if wait() or poll() are
+        # called from multiple threads at once.  After acquiring the lock,
+        # code must re-check self.returncode to see if another thread just
+        # finished a waitpid() call.
+        self._waitpid_lock = threading.Lock()
+    
+        self._input = None
+        self._communication_started = False
+        if bufsize is None:
+            bufsize = -1  # Restore default
+        if not isinstance(bufsize, int):
+            raise TypeError(&quot;bufsize must be an integer&quot;)
+    
+        if _mswindows:
+            if preexec_fn is not None:
+                raise ValueError(&quot;preexec_fn is not supported on Windows &quot;
+                                 &quot;platforms&quot;)
+        else:
+            # POSIX
+            if pass_fds and not close_fds:
+                warnings.warn(&quot;pass_fds overriding close_fds.&quot;, RuntimeWarning)
+                close_fds = True
+            if startupinfo is not None:
+                raise ValueError(&quot;startupinfo is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+            if creationflags != 0:
+                raise ValueError(&quot;creationflags is only supported on Windows &quot;
+                                 &quot;platforms&quot;)
+    
+        self.args = args
+        self.stdin = None
+        self.stdout = None
+        self.stderr = None
+        self.pid = None
+        self.returncode = None
+        self.encoding = encoding
+        self.errors = errors
+    
+        # Validate the combinations of text and universal_newlines
+        if (text is not None and universal_newlines is not None
+            and bool(universal_newlines) != bool(text)):
+            raise SubprocessError(&apos;Cannot disambiguate when both text &apos;
+                                  &apos;and universal_newlines are supplied but &apos;
+                                  &apos;different. Pass one or the other.&apos;)
+    
+        # Input and output objects. The general principle is like
+        # this:
+        #
+        # Parent                   Child
+        # ------                   -----
+        # p2cwrite   ---stdin---&gt;  p2cread
+        # c2pread    &lt;--stdout---  c2pwrite
+        # errread    &lt;--stderr---  errwrite
+        #
+        # On POSIX, the child objects are file descriptors.  On
+        # Windows, these are Windows file handles.  The parent objects
+        # are file descriptors on both platforms.  The parent objects
+        # are -1 when not using PIPEs. The child objects are -1
+        # when not redirecting.
+    
+        (p2cread, p2cwrite,
+         c2pread, c2pwrite,
+         errread, errwrite) = self._get_handles(stdin, stdout, stderr)
+    
+        # We wrap OS handles *before* launching the child, otherwise a
+        # quickly terminating child could make our fds unwrappable
+        # (see #8458).
+    
+        if _mswindows:
+            if p2cwrite != -1:
+                p2cwrite = msvcrt.open_osfhandle(p2cwrite.Detach(), 0)
+            if c2pread != -1:
+                c2pread = msvcrt.open_osfhandle(c2pread.Detach(), 0)
+            if errread != -1:
+                errread = msvcrt.open_osfhandle(errread.Detach(), 0)
+    
+        self.text_mode = encoding or errors or text or universal_newlines
+    
+        # How long to resume waiting on a child after the first ^C.
+        # There is no right value for this.  The purpose is to be polite
+        # yet remain good for interactive users trying to exit a tool.
+        self._sigint_wait_secs = 0.25  # 1/xkcd221.getRandomNumber()
+    
+        self._closed_child_pipe_fds = False
+    
+        try:
+            if p2cwrite != -1:
+                self.stdin = io.open(p2cwrite, &apos;wb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdin = io.TextIOWrapper(self.stdin, write_through=True,
+                            line_buffering=(bufsize == 1),
+                            encoding=encoding, errors=errors)
+            if c2pread != -1:
+                self.stdout = io.open(c2pread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stdout = io.TextIOWrapper(self.stdout,
+                            encoding=encoding, errors=errors)
+            if errread != -1:
+                self.stderr = io.open(errread, &apos;rb&apos;, bufsize)
+                if self.text_mode:
+                    self.stderr = io.TextIOWrapper(self.stderr,
+                            encoding=encoding, errors=errors)
+    
+            self._execute_child(args, executable, preexec_fn, close_fds,
+                                pass_fds, cwd, env,
+                                startupinfo, creationflags, shell,
+                                p2cread, p2cwrite,
+                                c2pread, c2pwrite,
+                                errread, errwrite,
+&gt;                               restore_signals, start_new_session)
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:775: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;subprocess.Popen object at 0x0000018A249E73C8&gt;
+args = &apos;..\\chromeDriver\\xchromedriver.exe --port=54501&apos;, executable = None
+preexec_fn = None, close_fds = False, pass_fds = (), cwd = None
+env = environ({&apos;ALLUSERSPROFILE&apos;: &apos;C:\\ProgramData&apos;, &apos;APPDATA&apos;: &apos;C:\\Users\\w.xing\\AppData\\Roaming&apos;, &apos;CHOCOLATEYINSTALL&apos;: ..._CURRENT_TEST&apos;: &apos;bdd_steps.py::test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt] (call)&apos;})
+startupinfo = &lt;subprocess.STARTUPINFO object at 0x0000018A249E7748&gt;
+creationflags = 0, shell = False, p2cread = Handle(668), p2cwrite = 11
+c2pread = -1, c2pwrite = Handle(696), errread = -1, errwrite = Handle(916)
+unused_restore_signals = True, unused_start_new_session = False
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       unused_restore_signals, unused_start_new_session):
+        &quot;&quot;&quot;Execute program (MS Windows version)&quot;&quot;&quot;
+    
+        assert not pass_fds, &quot;pass_fds not supported on Windows.&quot;
+    
+        if not isinstance(args, str):
+            args = list2cmdline(args)
+    
+        # Process startup details
+        if startupinfo is None:
+            startupinfo = STARTUPINFO()
+        else:
+            # bpo-34044: Copy STARTUPINFO since it is modified above,
+            # so the caller can reuse it multiple times.
+            startupinfo = startupinfo._copy()
+    
+        use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
+        if use_std_handles:
+            startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
+            startupinfo.hStdInput = p2cread
+            startupinfo.hStdOutput = c2pwrite
+            startupinfo.hStdError = errwrite
+    
+        attribute_list = startupinfo.lpAttributeList
+        have_handle_list = bool(attribute_list and
+                                &quot;handle_list&quot; in attribute_list and
+                                attribute_list[&quot;handle_list&quot;])
+    
+        # If we were given an handle_list or need to create one
+        if have_handle_list or (use_std_handles and close_fds):
+            if attribute_list is None:
+                attribute_list = startupinfo.lpAttributeList = {}
+            handle_list = attribute_list[&quot;handle_list&quot;] = \
+                list(attribute_list.get(&quot;handle_list&quot;, []))
+    
+            if use_std_handles:
+                handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
+    
+            handle_list[:] = self._filter_handle_list(handle_list)
+    
+            if handle_list:
+                if not close_fds:
+                    warnings.warn(&quot;startupinfo.lpAttributeList[&apos;handle_list&apos;] &quot;
+                                  &quot;overriding close_fds&quot;, RuntimeWarning)
+    
+                # When using the handle_list we always request to inherit
+                # handles but the only handles that will be inherited are
+                # the ones in the handle_list
+                close_fds = False
+    
+        if shell:
+            startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = _winapi.SW_HIDE
+            comspec = os.environ.get(&quot;COMSPEC&quot;, &quot;cmd.exe&quot;)
+            args = &apos;{} /c &quot;{}&quot;&apos;.format (comspec, args)
+    
+        # Start the process
+        try:
+            hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                                     # no special security
+                                     None, None,
+                                     int(not close_fds),
+                                     creationflags,
+                                     env,
+                                     os.fspath(cwd) if cwd is not None else None,
+&gt;                                    startupinfo)
+E                                    FileNotFoundError: [WinError 2] Le fichier spécifié est introuvable
+
+..\..\..\AppData\Local\Programs\Python\Python37\lib\subprocess.py:1178: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+&gt;           step_func(**kwargs)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:130: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+
+    def step_func(request):
+&gt;       result = request.getfixturevalue(func.__name__)
+
+..\venv\lib\site-packages\pytest_bdd\steps.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def getfixturevalue(self, argname):
+        &quot;&quot;&quot; Dynamically run a named fixture function.
+    
+        Declaring fixtures via function argument is recommended where possible.
+        But if you can only decide whether to use another fixture at test
+        setup time, you may use this function to retrieve it inside a fixture
+        or test function body.
+        &quot;&quot;&quot;
+&gt;       return self._get_active_fixturedef(argname).cached_result[0]
+
+..\venv\lib\site-packages\_pytest\fixtures.py:483: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+argname = &apos;givenNavigateToOceaViewPage&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;givenNavigateToOceaViewPage&apos; scope=&apos;function&apos; baseid=&apos;bdd_steps.py&apos;&gt;
+request = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+&gt;           fixturedef = request._get_active_fixturedef(argname)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:889: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+argname = &apos;chromeBrowser&apos;
+
+    def _get_active_fixturedef(self, argname):
+        try:
+            return self._fixture_defs[argname]
+        except KeyError:
+            try:
+                fixturedef = self._getnextfixturedef(argname)
+            except FixtureLookupError:
+                if argname == &quot;request&quot;:
+                    cached_result = (self, [0], None)
+                    scope = &quot;function&quot;
+                    return PseudoFixtureDef(cached_result, scope)
+                raise
+        # remove indent to prevent the python3 exception
+        # from leaking into the call
+&gt;       self._compute_fixture_value(fixturedef)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;SubRequest &apos;givenNavigateToOceaViewPage&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+
+    def _compute_fixture_value(self, fixturedef):
+        &quot;&quot;&quot;
+        Creates a SubRequest based on &quot;self&quot; and calls the execute method of the given fixturedef object. This will
+        force the FixtureDef object to throw away any previous results and compute a new fixture value, which
+        will be stored into the FixtureDef object itself.
+    
+        :param FixtureDef fixturedef:
+        &quot;&quot;&quot;
+        # prepare a subrequest object before calling fixture function
+        # (latter managed by fixturedef)
+        argname = fixturedef.argname
+        funcitem = self._pyfuncitem
+        scope = fixturedef.scope
+        try:
+            param = funcitem.callspec.getparam(argname)
+        except (AttributeError, ValueError):
+            param = NOTSET
+            param_index = 0
+            has_params = fixturedef.params is not None
+            fixtures_not_supported = getattr(funcitem, &quot;nofuncargs&quot;, False)
+            if has_params and fixtures_not_supported:
+                msg = (
+                    &quot;{name} does not support fixtures, maybe unittest.TestCase subclass?\n&quot;
+                    &quot;Node id: {nodeid}\n&quot;
+                    &quot;Function type: {typename}&quot;
+                ).format(
+                    name=funcitem.name,
+                    nodeid=funcitem.nodeid,
+                    typename=type(funcitem).__name__,
+                )
+                fail(msg, pytrace=False)
+            if has_params:
+                frame = inspect.stack()[3]
+                frameinfo = inspect.getframeinfo(frame[0])
+                source_path = frameinfo.filename
+                source_lineno = frameinfo.lineno
+                source_path = py.path.local(source_path)
+                if source_path.relto(funcitem.config.rootdir):
+                    source_path = source_path.relto(funcitem.config.rootdir)
+                msg = (
+                    &quot;The requested fixture has no parameter defined for test:\n&quot;
+                    &quot;    {}\n\n&quot;
+                    &quot;Requested fixture &apos;{}&apos; defined in:\n{}&quot;
+                    &quot;\n\nRequested here:\n{}:{}&quot;.format(
+                        funcitem.nodeid,
+                        fixturedef.argname,
+                        getlocation(fixturedef.func, funcitem.config.rootdir),
+                        source_path,
+                        source_lineno,
+                    )
+                )
+                fail(msg, pytrace=False)
+        else:
+            param_index = funcitem.callspec.indices[argname]
+            # if a parametrize invocation set a scope it will override
+            # the static scope defined with the fixture function
+            paramscopenum = funcitem.callspec._arg2scopenum.get(argname)
+            if paramscopenum is not None:
+                scope = scopes[paramscopenum]
+    
+        subrequest = SubRequest(self, scope, param, param_index, fixturedef)
+    
+        # check if a higher-level scoped fixture accesses a lower level one
+        subrequest._check_scope(argname, self.scope, scope)
+        try:
+            # call the fixture function
+&gt;           fixturedef.execute(request=subrequest)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:580: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+
+    def execute(self, request):
+        # get required arguments and register our own finish()
+        # with their finalization
+        for argname in self.argnames:
+            fixturedef = request._get_active_fixturedef(argname)
+            if argname != &quot;request&quot;:
+                fixturedef.addfinalizer(functools.partial(self.finish, request=request))
+    
+        my_cache_key = self.cache_key(request)
+        cached_result = getattr(self, &quot;cached_result&quot;, None)
+        if cached_result is not None:
+            result, cache_key, err = cached_result
+            if my_cache_key == cache_key:
+                if err is not None:
+                    _, val, tb = err
+                    raise val.with_traceback(tb)
+                else:
+                    return result
+            # we have a previous but differently parametrized fixture instance
+            # so we need to tear it down before creating a new one
+            self.finish(request)
+            assert not hasattr(self, &quot;cached_result&quot;)
+    
+        hook = self._fixturemanager.session.gethookproxy(request.node.fspath)
+&gt;       return hook.pytest_fixture_setup(fixturedef=self, request=request)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:909: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;, args = ()
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_fixture_setup&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A249E7548&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;fixtures&apos;, plugin=&lt;module &apos;_pytest.fixtures&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharm...t.setuponly&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\_pytest\\setuponly.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;fixturedef&apos;: &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;, &apos;request&apos;: &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+firstresult = True
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname=&apos;chromeBrowser&apos; scope=&apos;function&apos; baseid=&apos;&apos;&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+
+    def pytest_fixture_setup(fixturedef, request):
+        &quot;&quot;&quot; Execution of fixture setup. &quot;&quot;&quot;
+        kwargs = {}
+        for argname in fixturedef.argnames:
+            fixdef = request._get_active_fixturedef(argname)
+            result, arg_cache_key, exc = fixdef.cached_result
+            request._check_scope(argname, request.scope, fixdef.scope)
+            kwargs[argname] = result
+    
+        fixturefunc = resolve_fixture_function(fixturedef, request)
+        my_cache_key = fixturedef.cache_key(request)
+        try:
+&gt;           result = call_fixture_func(fixturefunc, request, kwargs)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:958: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturefunc = &lt;function chromeBrowser at 0x0000018A2471DB88&gt;
+request = &lt;SubRequest &apos;chromeBrowser&apos; for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+kwargs = {}
+
+    def call_fixture_func(fixturefunc, request, kwargs):
+        yieldctx = is_generator(fixturefunc)
+        if yieldctx:
+            it = fixturefunc(**kwargs)
+&gt;           res = next(it)
+
+..\venv\lib\site-packages\_pytest\fixtures.py:784: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @pytest.fixture
+    def chromeBrowser():
+        global BROWSER
+    
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option(&apos;prefs&apos;, {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;})
+    
+        BROWSER = webdriver.Chrome(&quot;..\\chromeDriver\\xchromedriver.exe&quot;,
+&gt;                                  chrome_options=options)
+
+..\steps\conftest.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;[AttributeError(&quot;&apos;WebDriver&apos; object has no attribute &apos;session_id&apos;&quot;) raised in repr()] WebDriver object at 0x18a249e71c8&gt;
+executable_path = &apos;..\\chromeDriver\\xchromedriver.exe&apos;, port = 0
+options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A249E7208&gt;
+service_args = None
+desired_capabilities = {&apos;browserName&apos;: &apos;chrome&apos;, &apos;goog:chromeOptions&apos;: {&apos;args&apos;: [], &apos;extensions&apos;: [], &apos;prefs&apos;: {&apos;intl.accept_languages&apos;: &apos;en,en_US&apos;}}, &apos;platform&apos;: &apos;ANY&apos;, &apos;version&apos;: &apos;&apos;}
+service_log_path = None
+chrome_options = &lt;selenium.webdriver.chrome.options.Options object at 0x0000018A249E7208&gt;
+keep_alive = True
+
+    def __init__(self, executable_path=&quot;chromedriver&quot;, port=0,
+                 options=None, service_args=None,
+                 desired_capabilities=None, service_log_path=None,
+                 chrome_options=None, keep_alive=True):
+        &quot;&quot;&quot;
+        Creates a new instance of the chrome driver.
+    
+        Starts the service and then creates new instance of chrome driver.
+    
+        :Args:
+         - executable_path - path to the executable. If the default is used it assumes the executable is in the $PATH
+         - port - port you would like the service to run, if left as 0, a free port will be found.
+         - options - this takes an instance of ChromeOptions
+         - service_args - List of args to pass to the driver service
+         - desired_capabilities - Dictionary object with non-browser specific
+           capabilities only, such as &quot;proxy&quot; or &quot;loggingPref&quot;.
+         - service_log_path - Where to log information from the driver.
+         - chrome_options - Deprecated argument for options
+         - keep_alive - Whether to configure ChromeRemoteConnection to use HTTP keep-alive.
+        &quot;&quot;&quot;
+        if chrome_options:
+            warnings.warn(&apos;use options instead of chrome_options&apos;,
+                          DeprecationWarning, stacklevel=2)
+            options = chrome_options
+    
+        if options is None:
+            # desired_capabilities stays as passed in
+            if desired_capabilities is None:
+                desired_capabilities = self.create_options().to_capabilities()
+        else:
+            if desired_capabilities is None:
+                desired_capabilities = options.to_capabilities()
+            else:
+                desired_capabilities.update(options.to_capabilities())
+    
+        self.service = Service(
+            executable_path,
+            port=port,
+            service_args=service_args,
+            log_path=service_log_path)
+&gt;       self.service.start()
+
+..\venv\lib\site-packages\selenium\webdriver\chrome\webdriver.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;selenium.webdriver.chrome.service.Service object at 0x0000018A249E7388&gt;
+
+    def start(self):
+        &quot;&quot;&quot;
+        Starts the Service.
+    
+        :Exceptions:
+         - WebDriverException : Raised either when it can&apos;t start the service
+           or when it can&apos;t connect to the service
+        &quot;&quot;&quot;
+        try:
+            cmd = [self.path]
+            cmd.extend(self.command_line_args())
+            self.process = subprocess.Popen(cmd, env=self.env,
+                                            close_fds=platform.system() != &apos;Windows&apos;,
+                                            stdout=self.log_file,
+                                            stderr=self.log_file,
+                                            stdin=PIPE)
+        except TypeError:
+            raise
+        except OSError as err:
+            if err.errno == errno.ENOENT:
+                raise WebDriverException(
+                    &quot;&apos;%s&apos; executable needs to be in PATH. %s&quot; % (
+&gt;                       os.path.basename(self.path), self.start_error_message)
+E                       selenium.common.exceptions.WebDriverException: Message: &apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home
+
+..\venv\lib\site-packages\selenium\webdriver\common\service.py:83: WebDriverException
+
+During handling of the above exception, another exception occurred:
+
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+encoding = &apos;utf-8&apos;
+
+    def _execute_scenario(feature, scenario, request, encoding):
+        &quot;&quot;&quot;Execute the scenario.
+    
+        :param feature: Feature.
+        :param scenario: Scenario.
+        :param request: request.
+        :param encoding: Encoding.
+        &quot;&quot;&quot;
+        request.config.hook.pytest_bdd_before_scenario(
+            request=request,
+            feature=feature,
+            scenario=scenario,
+        )
+    
+        try:
+            givens = set()
+            # Execute scenario steps
+            for step in scenario.steps:
+                try:
+                    step_func = _find_step_function(request, step, scenario, encoding=encoding)
+                except exceptions.StepDefinitionNotFoundError as exception:
+                    request.config.hook.pytest_bdd_step_func_lookup_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        exception=exception,
+                    )
+                    raise
+    
+                try:
+                    # Check if the fixture that implements given step has not been yet used by another given step
+                    if step.type == GIVEN:
+                        if step_func.fixture in givens:
+                            raise exceptions.GivenAlreadyUsed(
+                                u&apos;Fixture &quot;{0}&quot; that implements this &quot;{1}&quot; given step has been already used.&apos;.format(
+                                    step_func.fixture, step.name,
+                                )
+                            )
+                        givens.add(step_func.fixture)
+                except exceptions.ScenarioValidationError as exception:
+                    request.config.hook.pytest_bdd_step_validation_error(
+                        request=request,
+                        feature=feature,
+                        scenario=scenario,
+                        step=step,
+                        step_func=step_func,
+                        exception=exception,
+                        step_func_args=dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func)),
+                    )
+                    raise
+    
+&gt;               _execute_step_function(request, scenario, step, step_func)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:189: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+
+    def _execute_step_function(request, scenario, step, step_func):
+        &quot;&quot;&quot;Execute step function.
+    
+        :param request: PyTest request.
+        :param scenario: Scenario.
+        :param step: Step.
+        :param function step_func: Step function.
+        :param example: Example table.
+        &quot;&quot;&quot;
+        kw = dict(
+            request=request,
+            feature=scenario.feature,
+            scenario=scenario,
+            step=step,
+            step_func=step_func,
+        )
+    
+        request.config.hook.pytest_bdd_before_step(**kw)
+    
+        kw[&quot;step_func_args&quot;] = {}
+        try:
+            # Get the step argument values.
+            kwargs = dict((arg, request.getfixturevalue(arg)) for arg in get_args(step_func))
+            kw[&quot;step_func_args&quot;] = kwargs
+    
+            request.config.hook.pytest_bdd_before_step_call(**kw)
+            # Execute the step.
+            step_func(**kwargs)
+            request.config.hook.pytest_bdd_after_step(**kw)
+        except Exception as exception:
+&gt;           request.config.hook.pytest_bdd_step_error(exception=exception, **kw)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;, args = ()
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+notincall = set()
+
+    def __call__(self, *args, **kwargs):
+        if args:
+            raise TypeError(&quot;hook calling supports only keyword arguments&quot;)
+        assert not self.is_historic()
+        if self.spec and self.spec.argnames:
+            notincall = (
+                set(self.spec.argnames) - set([&quot;__multicall__&quot;]) - set(kwargs.keys())
+            )
+            if notincall:
+                warnings.warn(
+                    &quot;Argument(s) {} which are declared in the hookspec &quot;
+                    &quot;can not be found in this hook call&quot;.format(tuple(notincall)),
+                    stacklevel=2,
+                )
+&gt;       return self._hookexec(self, self.get_hookimpls(), kwargs)
+
+..\venv\lib\site-packages\pluggy\hooks.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;_pytest.config.PytestPluginManager object at 0x0000018A2335F408&gt;
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    def _hookexec(self, hook, methods, kwargs):
+        # called from all hookcaller instances.
+        # enable_tracing will set its own wrapping function at self._inner_hookexec
+&gt;       return self._inner_hookexec(hook, methods, kwargs)
+
+..\venv\lib\site-packages\pluggy\manager.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook = &lt;_HookCaller &apos;pytest_bdd_step_error&apos;&gt;
+methods = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+
+    self._inner_hookexec = lambda hook, methods, kwargs: hook.multicall(
+        methods,
+        kwargs,
+&gt;       firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+    )
+
+..\venv\lib\site-packages\pluggy\manager.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+                        res = hook_impl.function(*args)
+                        if res is not None:
+                            results.append(res)
+                            if firstresult:  # halt further impl calls
+                                break
+            except BaseException:
+                excinfo = sys.exc_info()
+        finally:
+            if firstresult:  # first result hooks return a single value
+                outcome = _Result(results[0] if results else None, excinfo)
+            else:
+                outcome = _Result(results, excinfo)
+    
+            # run all wrapper post-yield blocks
+            for gen in reversed(teardowns):
+                try:
+                    gen.send(outcome)
+                    _raise_wrapfail(gen, &quot;has second yield&quot;)
+                except StopIteration:
+                    pass
+    
+&gt;           return outcome.get_result()
+
+..\venv\lib\site-packages\pluggy\callers.py:208: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;pluggy.callers._Result object at 0x0000018A249E7708&gt;
+
+    def get_result(self):
+        &quot;&quot;&quot;Get the result(s) for this hook call.
+    
+        If the hook was marked as a ``firstresult`` only a single value
+        will be returned otherwise a list of results.
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        if self._excinfo is None:
+            return self._result
+        else:
+            ex = self._excinfo
+            if _py3:
+&gt;               raise ex[1].with_traceback(ex[2])
+
+..\venv\lib\site-packages\pluggy\callers.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+hook_impls = [&lt;HookImpl plugin_name=&apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\steps\\conftest.py&apos;, plugin=&lt;module &apos;steps.co..._bdd.plugin&apos; from &apos;C:\\Users\\w.xing\\PycharmProjects\\pycharmTest\\venv\\lib\\site-packages\\pytest_bdd\\plugin.py&apos;&gt;&gt;]
+caller_kwargs = {&apos;exception&apos;: WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google....ttps://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;, &apos;scenario&apos;: &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;, ...}
+firstresult = False
+
+    def _multicall(hook_impls, caller_kwargs, firstresult=False):
+        &quot;&quot;&quot;Execute a call into multiple python functions/methods and return the
+        result(s).
+    
+        ``caller_kwargs`` comes from _HookCaller.__call__().
+        &quot;&quot;&quot;
+        __tracebackhide__ = True
+        results = []
+        excinfo = None
+        try:  # run impl and wrapper setup functions in a loop
+            teardowns = []
+            try:
+                for hook_impl in reversed(hook_impls):
+                    try:
+                        args = [caller_kwargs[argname] for argname in hook_impl.argnames]
+                    except KeyError:
+                        for argname in hook_impl.argnames:
+                            if argname not in caller_kwargs:
+                                raise HookCallError(
+                                    &quot;hook call must provide argument %r&quot; % (argname,)
+                                )
+    
+                    if hook_impl.hookwrapper:
+                        try:
+                            gen = hook_impl.function(*args)
+                            next(gen)  # first yield
+                            teardowns.append(gen)
+                        except StopIteration:
+                            _raise_wrapfail(gen, &quot;did not yield&quot;)
+                    else:
+&gt;                       res = hook_impl.function(*args)
+
+..\venv\lib\site-packages\pluggy\callers.py:187: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+step = &lt;pytest_bdd.feature.Step object at 0x0000018A2488E948&gt;
+step_func = &lt;function _step_decorator.&lt;locals&gt;.decorator.&lt;locals&gt;.step_func at 0x0000018A233E5168&gt;
+step_func_args = {&apos;request&apos;: &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;}
+exception = WebDriverException(&quot;&apos;xchromedriver.exe&apos; executable needs to be in PATH. Please see https://sites.google.com/a/chromium.org/chromedriver/home&quot;)
+
+    def pytest_bdd_step_error(request, feature, scenario, step, step_func, step_func_args, exception):
+        &quot;&quot;&quot;- Called when step function failed to execute, exception goes here, assert&quot;&quot;&quot;
+        name = str(step.name).replace(&quot; &quot;, &quot;_&quot;).replace(&quot;&lt;&quot;, &quot;_&quot;).replace(&quot;&gt;&quot;, &quot;_&quot;)
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         name + datetime.datetime.now().strftime(&quot;-%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:49: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+
+    @pytest.mark.usefixtures(*function_args)
+    def scenario_wrapper(request):
+&gt;       _execute_scenario(feature, scenario, request, encoding)
+
+..\venv\lib\site-packages\pytest_bdd\scenario.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\venv\lib\site-packages\pytest_bdd\scenario.py:194: in _execute_scenario
+    scenario=scenario,
+..\venv\lib\site-packages\pluggy\hooks.py:286: in __call__
+    return self._hookexec(self, self.get_hookimpls(), kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:93: in _hookexec
+    return self._inner_hookexec(hook, methods, kwargs)
+..\venv\lib\site-packages\pluggy\manager.py:87: in &lt;lambda&gt;
+    firstresult=hook.spec.opts.get(&quot;firstresult&quot;) if hook.spec else False,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+request = &lt;FixtureRequest for &lt;Function test_login_with_wrong_password_part_2[https://multi.oceaview.com:8081-yyy-ttt]&gt;&gt;
+feature = &lt;pytest_bdd.feature.Feature object at 0x0000018A2488EA08&gt;
+scenario = &lt;pytest_bdd.feature.Scenario object at 0x0000018A2488ED48&gt;
+
+    def pytest_bdd_after_scenario(request, feature, scenario):
+        &quot;&quot;&quot;- Called after scenario is executed (even if one of steps has failed)&quot;&quot;&quot;
+        save_screen_file_name = datetime.datetime.now().strftime(&quot;%d-%b-%Y-%H-%M-%S-%f&quot;) + &quot;.JPG&quot;
+        image_saving_path = os.path.join(&quot;..&quot;,
+                                         IMAGE_PATH,
+                                         save_screen_file_name)
+&gt;       BROWSER.save_screenshot(image_saving_path)
+E       AttributeError: &apos;NoneType&apos; object has no attribute &apos;save_screenshot&apos;
+
+..\steps\conftest.py:28: AttributeError</failure></testcase></testsuite></testsuites>

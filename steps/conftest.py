@@ -75,7 +75,7 @@ def chromeBrowser():
     options = webdriver.ChromeOptions()
     options.add_experimental_option('prefs', {'intl.accept_languages': 'en,en_US'})
 
-    BROWSER = webdriver.Chrome("D:\\tools\\drivers\\chromeDriver\\chromedriver.exe",
+    BROWSER = webdriver.Chrome("..\\chromeDriver\\chromedriver.exe",
                                chrome_options=options)
     BROWSER.maximize_window()
 
