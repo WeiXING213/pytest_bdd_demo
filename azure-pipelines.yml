@@ -25,6 +25,7 @@ steps:
 
 - bash: |
     pip install selenium
+    pip install pyyaml
   displayName : 'Install a bunch of pip packages.'
 
 - script: |
