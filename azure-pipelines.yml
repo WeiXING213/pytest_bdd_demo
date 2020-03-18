@@ -26,6 +26,7 @@ steps:
 - bash: |
     pip install selenium
     pip install pyyaml
+    pip install pytest-bdd
     pip install pytest pytest-azurepipelines
   displayName : 'Install a bunch of pip packages.'
 
