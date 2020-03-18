@@ -6,9 +6,9 @@
 trigger:
 - master
 
-#pool:
+pool:
 #  vmImage: 'windows-latest'
-environment: 'Selenium Test machine'
+  envenvironment: 'Selenium Test machine'
 strategy:
   matrix:
     Python37:
