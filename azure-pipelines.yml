@@ -21,6 +21,7 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
+    python pip install selenium
   displayName: 'Install dependencies'
 
 - script: |
