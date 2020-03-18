@@ -21,10 +21,13 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    python pip install selenium
   displayName: 'Install dependencies'
 
 - script: |
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
+
+- bash: 
+    python install selenium
+  displayName : 'Install a bunch of pip packages.'
