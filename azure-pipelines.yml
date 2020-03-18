@@ -30,8 +30,8 @@ steps:
   displayName : 'Install a bunch of pip packages.'
 
 - bash: |
-    dir
     cd steps
+    dir
     pytest bdd_steps.py
   displayName: 'Run BDD tests.'
 
